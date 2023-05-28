@@ -1,3 +1,8 @@
+﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
+-- Link to schema: https://app.quickdatabasediagrams.com/#/d/RYqJBP
+-- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
+
+
 CREATE TABLE `Matches` (
     `MatchID` CHAR(4)  NOT NULL ,
     `Home Team` VARCHAR(30)  NOT NULL ,
@@ -53,6 +58,15 @@ CREATE TABLE `Stats` (
     `PlayerID` CHAR(4)  NOT NULL 
 );
 
+CREATE TABLE `Table` (
+    `TeamID` CHAR(4)  NOT NULL ,
+    `M` INT(2)  NOT NULL ,
+    `W` INT(2)  NOT NULL ,
+    `L` INT(2)  NOT NULL ,
+    `NRR` FLOAT(1,3)  NOT NULL ,
+    `PTS` INT(2)  NOT NULL 
+);
+
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Home Team` FOREIGN KEY(`Home Team`)
 REFERENCES `Teams` (`TeamID`);
 
@@ -76,3 +90,7 @@ REFERENCES `Players` (`PlayerID`);
 
 ALTER TABLE `Stats` ADD CONSTRAINT `fk_Stats_PlayerID` FOREIGN KEY(`PlayerID`)
 REFERENCES `Players` (`PlayerID`);
+
+ALTER TABLE `Table` ADD CONSTRAINT `fk_Table_TeamID` FOREIGN KEY(`TeamID`)
+REFERENCES `Teams` (`TeamID`);
+
