@@ -1,9 +1,4 @@
-﻿-- Exported from QuickDBD: https://www.quickdatabasediagrams.com/
--- Link to schema: https://app.quickdatabasediagrams.com/#/d/RYqJBP
--- NOTE! If you have used non-SQL datatypes in your design, you will have to change these here.
-
-
-CREATE TABLE `Matches` (
+﻿CREATE TABLE `Matches` (
     `MatchID` CHAR(4)  NOT NULL ,
     `Home Team` VARCHAR(30)  NOT NULL ,
     `Away Team` VARCHAR(30)  NOT NULL ,
@@ -15,7 +10,7 @@ CREATE TABLE `Matches` (
     PRIMARY KEY (
         `MatchID`
     )
-);
+) ENGINE = INNODB;
 
 CREATE TABLE `Teams` (
     `TeamID` CHAR(4)  NOT NULL ,
@@ -23,7 +18,7 @@ CREATE TABLE `Teams` (
     PRIMARY KEY (
         `TeamID`
     )
-);
+) ENGINE = INNODB;
 
 CREATE TABLE `Players` (
     `PlayerID` CHAR(4)  NOT NULL ,
@@ -33,7 +28,7 @@ CREATE TABLE `Players` (
     PRIMARY KEY (
         `PlayerID`
     )
-);
+) ENGINE = INNODB;
 
 CREATE TABLE `Scoreboard` (
     `MatchID` CHAR(4)  NOT NULL ,
@@ -44,7 +39,7 @@ CREATE TABLE `Scoreboard` (
     `Away Team Wickets` INT(2)  NOT NULL ,
     `Away Team Overs` FLOAT(2,1)  NOT NULL ,
     `MVP` CHAR(4)  NOT NULL 
-);
+) ENGINE = INNODB;
 
 CREATE TABLE `Stats` (
     `Runs` INT(4)  NOT NULL ,
@@ -56,41 +51,41 @@ CREATE TABLE `Stats` (
     `Fours` INT(3)  NOT NULL ,
     `Five Wicket Haul` INT(3)  NOT NULL ,
     `PlayerID` CHAR(4)  NOT NULL 
-);
+) ENGINE = INNODB;
 
 CREATE TABLE `Table` (
     `TeamID` CHAR(4)  NOT NULL ,
     `M` INT(2)  NOT NULL ,
     `W` INT(2)  NOT NULL ,
     `L` INT(2)  NOT NULL ,
-    `NRR` FLOAT(1,3)  NOT NULL ,
+    `NRR` FLOAT(3,3)  NOT NULL ,
     `PTS` INT(2)  NOT NULL 
-);
+) ENGINE = INNODB;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Home Team` FOREIGN KEY(`Home Team`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Away Team` FOREIGN KEY(`Away Team`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_TossWinner` FOREIGN KEY(`TossWinner`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Winner` FOREIGN KEY(`Winner`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Players` ADD CONSTRAINT `fk_Players_TeamID` FOREIGN KEY(`TeamID`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Scoreboard` ADD CONSTRAINT `fk_Scoreboard_MatchID` FOREIGN KEY(`MatchID`)
-REFERENCES `Matches` (`MatchID`);
+REFERENCES `Matches` (`MatchID`) ON DELETE CASCADE;
 
 ALTER TABLE `Scoreboard` ADD CONSTRAINT `fk_Scoreboard_MVP` FOREIGN KEY(`MVP`)
-REFERENCES `Players` (`PlayerID`);
+REFERENCES `Players` (`PlayerID`) ON DELETE CASCADE;
 
 ALTER TABLE `Stats` ADD CONSTRAINT `fk_Stats_PlayerID` FOREIGN KEY(`PlayerID`)
-REFERENCES `Players` (`PlayerID`);
+REFERENCES `Players` (`PlayerID`) ON DELETE CASCADE;
 
 ALTER TABLE `Table` ADD CONSTRAINT `fk_Table_TeamID` FOREIGN KEY(`TeamID`)
-REFERENCES `Teams` (`TeamID`);
+REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
