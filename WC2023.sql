@@ -1,7 +1,7 @@
 ﻿CREATE TABLE `Matches` (
     `MatchID` CHAR(4)  NOT NULL ,
-    `Home Team` VARCHAR(30)  NOT NULL ,
-    `Away Team` VARCHAR(30)  NOT NULL ,
+    `Team A` VARCHAR(30)  NOT NULL ,
+    `Team B` VARCHAR(30)  NOT NULL ,
     `Date` DATE  NOT NULL ,
     `Time` TIME  NOT NULL ,
     `Venue` VARCHAR(50)  NOT NULL ,
@@ -24,6 +24,9 @@ CREATE TABLE `Players` (
     `PlayerID` CHAR(4)  NOT NULL ,
     `PlayerName` VARCHAR(30)  NOT NULL ,
     `Position` VARCHAR(15)  NOT NULL ,
+    `MVP` INT(2) NOT NULL,
+    `Runs` INT(4) NOT NULL,
+    `Wickets` INT(2) NOT NULL,
     `TeamID` CHAR(4)  NOT NULL ,
     PRIMARY KEY (
         `PlayerID`
@@ -32,12 +35,12 @@ CREATE TABLE `Players` (
 
 CREATE TABLE `Scoreboard` (
     `MatchID` CHAR(4)  NOT NULL ,
-    `Home Team Runs` INT(3)  NOT NULL ,
-    `Home Team Wickets` INT(2)  NOT NULL ,
-    `Home Team Overs` FLOAT(2,1)  NOT NULL ,
-    `Away Team Runs` INT(3)  NOT NULL ,
-    `Away Team Wickets` INT(2)  NOT NULL ,
-    `Away Team Overs` FLOAT(2,1)  NOT NULL ,
+    `Team A Runs` INT(3)  NOT NULL ,
+    `Team A Wickets` INT(2)  NOT NULL ,
+    `Team A Overs` FLOAT(2,1)  NOT NULL ,
+    `Team B Runs` INT(3)  NOT NULL ,
+    `Team B Wickets` INT(2)  NOT NULL ,
+    `Team B Overs` FLOAT(2,1)  NOT NULL ,
     `MVP` CHAR(4)  NOT NULL 
 ) ENGINE = INNODB;
 
@@ -62,10 +65,10 @@ CREATE TABLE `Table` (
     `PTS` INT(2)  NOT NULL 
 ) ENGINE = INNODB;
 
-ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Home Team` FOREIGN KEY(`Home Team`)
+ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Team A` FOREIGN KEY(`Team A`)
 REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
-ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Away Team` FOREIGN KEY(`Away Team`)
+ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_Team B` FOREIGN KEY(`Team B`)
 REFERENCES `Teams` (`TeamID`) ON DELETE CASCADE;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_TossWinner` FOREIGN KEY(`TossWinner`)
