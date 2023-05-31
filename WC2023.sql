@@ -39,18 +39,18 @@ CREATE TABLE `TeamA_Score` (
     `Team A Score` VARCHAR(6)  NOT NULL ,
     `Team A Overs` FLOAT(2,1)  NOT NULL ,
     `Batting` VARCHAR(30) NOT NULL ,
-    `R` INT(3) NOT NULL ,
-    `B` INT(3) NOT NULL ,
-    `4s` INT(2) NOT NULL ,
-    `6s` INT(2) NOT NULL ,
-    `SR` FLOAT(3,2) NOT NULL ,
+    `batterA_Runs` INT(3) NOT NULL ,
+    `Balls` INT(3) NOT NULL ,
+    `Fours` INT(2) NOT NULL ,
+    `Sixes` INT(2) NOT NULL ,
+    `Strike_Rate` FLOAT(3,2) NOT NULL ,
     `Extras` VARCHAR(30) NOT NULL ,
     `Bowling` VARCHAR(30) NOT NULL ,
-    `O` INT(3) NOT NULL ,
-    `M` INT(3) NOT NULL ,
-    `R` INT(3) NOT NULL ,
-    `W` INT(3) NOT NULL ,
-    `Econ` FLOAT(2,2) NOT NULL 
+    `Overs` INT(3) NOT NULL ,
+    `Maiden` INT(3) NOT NULL ,
+    `bowlerA_Runs` INT(3) NOT NULL ,
+    `Wickets` INT(3) NOT NULL ,
+    `Economy` FLOAT(2,2) NOT NULL 
 ) ENGINE = INNODB;
 
 CREATE TABLE `TeamB_Score` (
@@ -58,18 +58,18 @@ CREATE TABLE `TeamB_Score` (
     `Team B Score` VARCHAR(6)  NOT NULL ,
     `Team B Overs` FLOAT(2,1)  NOT NULL ,
     `Batting` VARCHAR(30) NOT NULL ,
-    `R` INT(3) NOT NULL ,
-    `B` INT(3) NOT NULL ,
-    `4s` INT(2) NOT NULL ,
-    `6s` INT(2) NOT NULL ,
-    `SR` FLOAT(3,2) NOT NULL ,
+    `batterB_Runs` INT(3) NOT NULL ,
+    `Balls` INT(3) NOT NULL ,
+    `Fours` INT(2) NOT NULL ,
+    `Sixes` INT(2) NOT NULL ,
+    `Strike_Rate` FLOAT(3,2) NOT NULL ,
     `Extras` VARCHAR(30) NOT NULL ,
     `Bowling` VARCHAR(30) NOT NULL ,
-    `O` INT(3) NOT NULL ,
-    `M` INT(3) NOT NULL ,
-    `R` INT(3) NOT NULL ,
-    `W` INT(3) NOT NULL ,
-    `Econ` FLOAT(2,2) NOT NULL 
+    `Overs` INT(3) NOT NULL ,
+    `Maiden` INT(3) NOT NULL ,
+    `bowlerB_Runs` INT(3) NOT NULL ,
+    `Wickets` INT(3) NOT NULL ,
+    `Economy` FLOAT(2,2) NOT NULL 
 ) ENGINE = INNODB;
 
 CREATE TABLE `Stats` (
