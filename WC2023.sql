@@ -7,6 +7,7 @@
     `Venue` VARCHAR(50)  NOT NULL ,
     `TossWinner` VARCHAR(30)  NOT NULL ,
     `Winner` VARCHAR(30)  NOT NULL ,
+    `MVP` VARCHAR (30) NOT NULL ,
     PRIMARY KEY (
         `MatchID`
     )
@@ -33,15 +34,42 @@ CREATE TABLE `Players` (
     )
 ) ENGINE = INNODB;
 
-CREATE TABLE `Scoreboard` (
+CREATE TABLE `TeamA_Score` (
     `MatchID` CHAR(4)  NOT NULL ,
-    `Team A Runs` INT(3)  NOT NULL ,
-    `Team A Wickets` INT(2)  NOT NULL ,
+    `Team A Score` VARCHAR(6)  NOT NULL ,
     `Team A Overs` FLOAT(2,1)  NOT NULL ,
-    `Team B Runs` INT(3)  NOT NULL ,
-    `Team B Wickets` INT(2)  NOT NULL ,
+    `Batting` VARCHAR(30) NOT NULL ,
+    `R` INT(3) NOT NULL ,
+    `B` INT(3) NOT NULL ,
+    `4s` INT(2) NOT NULL ,
+    `6s` INT(2) NOT NULL ,
+    `SR` FLOAT(3,2) NOT NULL ,
+    `Extras` VARCHAR(30) NOT NULL ,
+    `Bowling` VARCHAR(30) NOT NULL ,
+    `O` INT(3) NOT NULL ,
+    `M` INT(3) NOT NULL ,
+    `R` INT(3) NOT NULL ,
+    `W` INT(3) NOT NULL ,
+    `Econ` FLOAT(2,2) NOT NULL ,
+) ENGINE = INNODB;
+
+CREATE TABLE `TeamB_Score` (
+    `MatchID` CHAR(4)  NOT NULL ,
+    `Team B Score` VARCHAR(6)  NOT NULL ,
     `Team B Overs` FLOAT(2,1)  NOT NULL ,
-    `MVP` CHAR(4)  NOT NULL 
+    `Batting` VARCHAR(30) NOT NULL ,
+    `R` INT(3) NOT NULL ,
+    `B` INT(3) NOT NULL ,
+    `4s` INT(2) NOT NULL ,
+    `6s` INT(2) NOT NULL ,
+    `SR` FLOAT(3,2) NOT NULL ,
+    `Extras` VARCHAR(30) NOT NULL ,
+    `Bowling` VARCHAR(30) NOT NULL ,
+    `O` INT(3) NOT NULL ,
+    `M` INT(3) NOT NULL ,
+    `R` INT(3) NOT NULL ,
+    `W` INT(3) NOT NULL ,
+    `Econ` FLOAT(2,2) NOT NULL ,
 ) ENGINE = INNODB;
 
 CREATE TABLE `Stats` (
