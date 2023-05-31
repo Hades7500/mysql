@@ -1,13 +1,13 @@
 ﻿CREATE TABLE `Matches` (
     `MatchID` CHAR(4)  NOT NULL ,
-    `Team A` VARCHAR(30)  NOT NULL ,
-    `Team B` VARCHAR(30)  NOT NULL ,
+    `TeamA_ID` VARCHAR(30)  NOT NULL ,
+    `TeamB_ID` VARCHAR(30)  NOT NULL ,
     `Date` DATE  NOT NULL ,
     `Time` TIME  NOT NULL ,
     `Venue` VARCHAR(50)  NOT NULL ,
-    `TossWinner` VARCHAR(30)  NOT NULL ,
-    `Winner` VARCHAR(30)  NOT NULL ,
-    `MVP` VARCHAR (30) NOT NULL ,
+    `TossWinner_TID` VARCHAR(30)  NOT NULL ,
+    `Winner_TID` VARCHAR(30)  NOT NULL ,
+    `MVP_PID` VARCHAR (30) NOT NULL ,
     PRIMARY KEY (
         `MatchID`
     )
@@ -25,7 +25,7 @@ CREATE TABLE `Players` (
     `PlayerID` CHAR(4)  NOT NULL ,
     `PlayerName` VARCHAR(30)  NOT NULL ,
     `Position` VARCHAR(15)  NOT NULL ,
-    `MVP` VARCHAR(30) NOT NULL,
+    `MVP` INT(2) NOT NULL,
     `Runs` INT(4) NOT NULL,
     `Wickets` INT(2) NOT NULL,
     `TeamID` CHAR(4)  NOT NULL ,
@@ -84,12 +84,12 @@ CREATE TABLE `Stats` (
     `PlayerID` CHAR(4)  NOT NULL 
 ) ENGINE = INNODB;
 
-CREATE TABLE `Table` (
+CREATE TABLE `Points_Table` (
     `TeamID` CHAR(4)  NOT NULL ,
     `Matches` INT(2)  NOT NULL ,
     `Wins` INT(2)  NOT NULL ,
     `Losses` INT(2)  NOT NULL ,
-    `Net Run Rate` FLOAT(5,3)  NOT NULL ,
+    `Net Run-Rate` FLOAT(5,3)  NOT NULL ,
     `Points` INT(2)  NOT NULL 
 ) ENGINE = INNODB;
 
