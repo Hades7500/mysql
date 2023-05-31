@@ -50,7 +50,7 @@ CREATE TABLE `TeamA_Score` (
     `M` INT(3) NOT NULL ,
     `R` INT(3) NOT NULL ,
     `W` INT(3) NOT NULL ,
-    `Econ` FLOAT(2,2) NOT NULL ,
+    `Econ` FLOAT(2,2) NOT NULL 
 ) ENGINE = INNODB;
 
 CREATE TABLE `TeamB_Score` (
@@ -69,7 +69,7 @@ CREATE TABLE `TeamB_Score` (
     `M` INT(3) NOT NULL ,
     `R` INT(3) NOT NULL ,
     `W` INT(3) NOT NULL ,
-    `Econ` FLOAT(2,2) NOT NULL ,
+    `Econ` FLOAT(2,2) NOT NULL 
 ) ENGINE = INNODB;
 
 CREATE TABLE `Stats` (
