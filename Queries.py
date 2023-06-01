@@ -1,9 +1,8 @@
 import mysql.connector as mycon
 try:
-    #username=input("UserName: ")
-    #password=input("Password: ")
-    #con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
-    con=mycon.connect(host="localhost",user=f"Maddy",passwd=f"1234")
+    username=input("UserName: ")
+    password=input("Password: ")
+    con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
     cur=con.cursor()
     cur.execute("use WC2023")
 except:
