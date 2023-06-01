@@ -1,14 +1,13 @@
 import mysql.connector as mycon
 try:
-    #username=input("UserName: ")
-    #password=input("Password: ")
-    #con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
-    con=mycon.connect(host="localhost",user=f"Maddy",passwd=f"1234")
+    username=input("UserName: ")
+    password=input("Password: ")
+    con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
     cur=con.cursor()
+    cur.execute("use WC2023")
 except:
     print("Username or Password Doesn't Match")
     exit()
-cur.execute("use WC2023")
 def delete():
     ...
 def update():
@@ -20,34 +19,39 @@ def add_team_points():
 def add_stats():
     ...
 def add_matches():
-    mid=input("MatchID: ")
-    Team_A=input("Team A: ")
-    Team_B=input("Team B: ")
+    cur1=con.cursor()
+    Team_A=input("TeamA_ID: ")
+    Team_B=input("TeamB_ID: ")
     date=input("Date: ")
-    time = input("Time: ")
+    time=input("Time: ")
     venue=input("Venue: ")
-    toss_winner=input("Toss Winner: ")
-    winner=input("Winner: ")
-    mvp=input("Man of the Match: ")
-    cur.execute(f"INSERT INTO Matches VALUE ('{mid}', '{Team_A}', '{Team_B}', '{date}', '{time}', '{venue}', '{toss_winner}', '{winner}', '{mvp}')")
+    toss_winner=input("TossWinner_TID: ")
+    winner=input("Winner_TID: ")
+    mvp=input("MVP_PID: ")
+    loser=input("Loser_TID: ")
+    mid=input("MatchID: ")
+    cur.execute("insert into matches values('{}','{}','{}','{}','{}','{}','{}','{}','{}','{}')".format(mid,Team_A,Team_B,date,time,venue,toss_winner,loser,winner,mvp))
+    cur1.execute(f"update players set no_of_mvp = no_of_mvp+1 where PID='{mvp}'")
+    con.commit()
+    cur1.close()
 def add_player():
     pid=input("PlayerID: ")
     pname=input("Player Name: ")
     pos=input("Position: ")
-    mvp=int(input("Man of the Match: "))
     runs=int(input("Runs: "))
     wickets=int(input("Wickets: "))
     tid=input("TeamID: ")
-    cur.execute("INSERT INTO Players VALUE ('{}','{}','{}',{},{},{},'{}')".format(pid,pname,pos,mvp,runs,wickets,tid))
+    cur.execute("insert into players (PID, PName, Position, Runs, Wickets, TID) values('{}','{}','{}',{},{},'{}')".format(pid,pname,pos,runs,wickets,tid))
     con.commit()
 def add_team():
     tid=input("TeamID: ")
     tname=input("Team Name: ")
-    cur.execute("INSERT INTO Teams VALUE ('{}','{}')".format(tid,tname))
+    cur.execute("insert into teams values('{}','{}')".format(tid,tname))
     con.commit()
 def insert():
     while True:
         choice=int(input("1.Add Team \n2.Add Player\n3.Add Matches\n4.Add Stats\n5.Add Team Points\n0.Previous\n(1/2/3/4/5/0): "))
+        print()
         if choice==1:
             add_team()
         elif choice==2:
@@ -65,25 +69,33 @@ def display_matches():
 def display_all_players():
     ...
 def display_players_of_a_team():
-    ...
+    cur.execute("select * from Players")
+    data=cur.fetchall()
+    print("PID\t\tPName\t\tPosition\tNo_of_MVP\tRuns\t\tWickets\t\tTID")
+    for row in data:
+        for col in row:
+            print(col,end="\t\t")
+        print()
 def display_teams():
     cur.execute("select * from Teams")
     data=cur.fetchall()
     print("TeamID\tTeamName")
-    teams = [team for team in data]
-    return teams
+    for row in data:
+        for col in row:
+            print(col,end="\t")
+        print()
 def display():
     while True:
         choice=int(input("1.Display Teams \n2.Display Players of a team \n3.Display All Players \n4.Display All Matches \n0.Previous\n(1/2/3/4/0): "))
         if choice==1:
             display_teams()
-        if choice==1:
+        elif choice==2:
             display_players_of_a_team()
-        if choice==1:
+        elif choice==3:
             display_all_players()
-        if choice==1:
+        elif choice==4:
             display_matches()
-        if choice==1:
+        elif choice==0:
             break
 def menu():
     while True:
@@ -102,3 +114,4 @@ def menu():
         elif choice==0:
             print("Bye!!")
             break
+menu()
