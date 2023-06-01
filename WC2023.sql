@@ -6,6 +6,7 @@
     `Time` TIME  NOT NULL ,
     `Venue` VARCHAR(50)  NOT NULL ,
     `TossWinner_TID` VARCHAR(30)  NOT NULL ,
+    `Loser_TID` VARCHAR(30)  NOT NULL ,
     `Winner_TID` VARCHAR(30)  NOT NULL ,
     `MVP_PID` VARCHAR (30) NOT NULL ,
     PRIMARY KEY (
@@ -25,7 +26,7 @@ CREATE TABLE `Players` (
     `PID` CHAR(4)  NOT NULL ,
     `PName` VARCHAR(30)  NOT NULL ,
     `Position` VARCHAR(15)  NOT NULL ,
-    `MVP_PID` INT(2) NOT NULL,
+    `NO_of_MVP` INT(2) NOT NULL DEFAULT 0,
     `Runs` INT(4) NOT NULL,
     `Wickets` INT(2) NOT NULL,
     `TID` CHAR(4)  NOT NULL ,
@@ -94,7 +95,10 @@ CREATE TABLE `Points_Table` (
 ) ENGINE = INNODB;
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_TeamA_TID` FOREIGN KEY(`TeamA_TID`)
-REFERENCES `Teams` (`TID`) ON DELETE CASCADE;
+REFERENCES `Teams`(`TID`);
+
+ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_MVP_PID` FOREIGN KEY(`MVP_PID`)
+REFERENCES `Players`(`PID`);
 
 ALTER TABLE `Matches` ADD CONSTRAINT `fk_Matches_TeamB_TID` FOREIGN KEY(`TeamB_TID`)
 REFERENCES `Teams` (`TID`) ON DELETE CASCADE;
