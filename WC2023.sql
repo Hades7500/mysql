@@ -6,6 +6,7 @@
     `Time` TIME  NOT NULL ,
     `Venue` VARCHAR(50)  NOT NULL ,
     `TossWinner_TID` VARCHAR(30)  NOT NULL ,
+    `Loser_TID` VARCHAR(30)  NOT NULL ,
     `Winner_TID` VARCHAR(30)  NOT NULL ,
     `MVP_PID` VARCHAR (30) NOT NULL ,
     PRIMARY KEY (
