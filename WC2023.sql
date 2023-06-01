@@ -25,7 +25,7 @@ CREATE TABLE `Players` (
     `PID` CHAR(4)  NOT NULL ,
     `PName` VARCHAR(30)  NOT NULL ,
     `Position` VARCHAR(15)  NOT NULL ,
-    `MVP_PID` INT(2) NOT NULL,
+    `NO_of_MVP` INT(2) NOT NULL DEFAULT 0,
     `Runs` INT(4) NOT NULL,
     `Wickets` INT(2) NOT NULL,
     `TID` CHAR(4)  NOT NULL ,
