@@ -1,40 +1,25 @@
 import tkinter as tk
-from tkinter import ttk
+import ttkbootstrap as ttk
+import Queries
 
-# list of events
-# pythontutorial.net/tkinter/tkinter-event-binding
+window = ttk.Window(themename = "darkly")
+window.title("World Cup")
+window.geometry("1600x900")
 
-def get_pos(event):
-	print(f'x: {event.x} y: {event.y}')
+team  = tk.StringVar()
 
-# window
-window = tk.Tk()
-window.geometry('600x500')
-window.title('Event Binding')
+def display_teams():
+    teams = Queries.display_teams()
 
-# widgets 
-text = tk.Text(window)
-text.pack()
+    for i in teams:
+        team.set(f"{i[0]} {i[1]}")
+        print(team.get())
+        ttk.Label(window, text = "Hello", textvariable = team.get()).place(x = 10, y = 20)
+        window.update()
 
-entry = ttk.Entry(window)
-entry.pack()
+view_matches = ttk.Button(window, text = "View Matches", command = display_teams)
+view_matches.pack()
 
-button = ttk.Button(window, text = 'A button')
-button.pack()
-
-# events
-# button.bind('<Alt-KeyPress-a>', lambda event: print(event))
-# window.bind('<KeyPress>', lambda event: print(f'a button was pressed ({event.char})'))
-
-# window.bind('<Motion>', get_pos)
-
-entry.bind('<FocusIn>', lambda event: print('entry field was selected'))
-entry.bind('<FocusOut>', lambda event: print('entry field was unselected'))
-
-# exercise : 
-# print 'Mousewheel' when the user holds down shift and uses the mousewheel while text is selected
-window.bind('<Shift-Button-4>', lambda event: print('Mousewheel'))
-window.bind('<Shift-Button-5>', lambda event: print('Mousewheel'))
 
 # run 
 window.mainloop()

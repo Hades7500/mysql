@@ -4,10 +4,10 @@ try:
     password=input("Password: ")
     con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
     cur=con.cursor()
-    cur.execute("use WC2023")
 except:
     print("Username or Password Doesn't Match")
     exit()
+cur.execute("use WC2023")
 def delete():
     ...
 def update():
@@ -19,15 +19,16 @@ def add_team_points():
 def add_stats():
     ...
 def add_matches():
+    mid=input("MatchID: ")
     Team_A=input("Team A: ")
     Team_B=input("Team B: ")
     date=input("Date: ")
+    time = input("Time: ")
     venue=input("Venue: ")
     toss_winner=input("Toss Winner: ")
     winner=input("Winner: ")
     mvp=input("Man of the Match: ")
-    mid=input("MatchID: ")
-    cur.execute("insert into players values('{}','{}','{}','{}','{}','{}','{}','{}')".format(Team_A,Team_B,date,venue,toss_winner,winner,mvp,mid))
+    cur.execute(f"INSERT INTO Matches VALUE ('{mid}', '{Team_A}', '{Team_B}', '{date}', '{time}', '{venue}', '{toss_winner}', '{winner}', '{mvp}')")
 def add_player():
     pid=input("PlayerID: ")
     pname=input("Player Name: ")
@@ -36,12 +37,12 @@ def add_player():
     runs=int(input("Runs: "))
     wickets=int(input("Wickets: "))
     tid=input("TeamID: ")
-    cur.execute("insert into players values('{}','{}','{}',{},{},{},'{}')".format(pid,pname,pos,mvp,runs,wickets,tid))
+    cur.execute("INSERT INTO Players VALUE ('{}','{}','{}',{},{},{},'{}')".format(pid,pname,pos,mvp,runs,wickets,tid))
     con.commit()
 def add_team():
     tid=input("TeamID: ")
     tname=input("Team Name: ")
-    cur.execute("insert into teams values('{}','{}')".format(tid,tname))
+    cur.execute("INSERT INTO Teams VALUE ('{}','{}')".format(tid,tname))
     con.commit()
 def insert():
     while True:
@@ -68,10 +69,8 @@ def display_teams():
     cur.execute("select * from Teams")
     data=cur.fetchall()
     print("TeamID\tTeamName")
-    for row in data:
-        for col in row:
-            print(col,end="\t")
-        print()
+    teams = [team for team in data]
+    return teams
 def display():
     while True:
         choice=int(input("1.Display Teams \n2.Display Players of a team \n3.Display All Players \n4.Display All Matches \n0.Previous\n(1/2/3/4/0): "))
@@ -102,4 +101,3 @@ def menu():
         elif choice==0:
             print("Bye!!")
             break
-menu()
