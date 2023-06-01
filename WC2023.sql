@@ -1,14 +1,14 @@
 ﻿CREATE TABLE `Matches` (
     `MID` CHAR(4)  NOT NULL ,
-    `TeamA_TID` VARCHAR(30)  NOT NULL ,
-    `TeamB_TID` VARCHAR(30)  NOT NULL ,
+    `TeamA_TID` CHAR(4)  NOT NULL ,
+    `TeamB_TID` CHAR(4)  NOT NULL ,
     `Date` DATE  NOT NULL ,
     `Time` TIME  NOT NULL ,
     `Venue` VARCHAR(50)  NOT NULL ,
-    `TossWinner_TID` VARCHAR(30)  NOT NULL ,
-    `Loser_TID` VARCHAR(30)  NOT NULL ,
-    `Winner_TID` VARCHAR(30)  NOT NULL ,
-    `MVP_PID` VARCHAR (30) NOT NULL ,
+    `TossWinner_TID` CHAR(4)  NOT NULL ,
+    `Loser_TID` CHAR(4)  NOT NULL ,
+    `Winner_TID` CHAR(4)  NOT NULL ,
+    `MVP_PID` CHAR(4) NOT NULL ,
     PRIMARY KEY (
         `MID`
     )
