@@ -1,8 +1,6 @@
 import mysql.connector as mycon
 try:
-    username=input("UserName: ")
-    password=input("Password: ")
-    con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
+    con=mycon.connect(host="localhost",user="hades79",passwd="1234")
     cur=con.cursor()
     cur.execute("use WC2023")
 except:
@@ -80,10 +78,8 @@ def display_teams():
     cur.execute("select * from Teams")
     data=cur.fetchall()
     print("TeamID\tTeamName")
-    for row in data:
-        for col in row:
-            print(col,end="\t")
-        print()
+
+    return [team for team in data]
 def display():
     while True:
         choice=int(input("1.Display Teams \n2.Display Players of a team \n3.Display All Players \n4.Display All Matches \n0.Previous\n(1/2/3/4/0): "))
@@ -114,4 +110,3 @@ def menu():
         elif choice==0:
             print("Bye!!")
             break
-menu()
