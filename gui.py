@@ -6,33 +6,28 @@ window = ttk.Window(themename = "darkly")
 window.title("World Cup")
 window.geometry("1600x900")
 
-ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50")
+ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
 
-output_frame = ttk.Frame()
+output_frame = ttk.Frame(window)
 output_frame.place(x = 100, y = 100)
+
+style = ttk.Style()
 
 def display_teams():
     teams = Queries.display_teams()
-
-    e = ttk.Entry(output_frame, width=20, font=('Arial',16,'bold'))
-    e.grid(row = 0, column = 0)
-    e.insert(0, "TeamID")
-    e.configure(state = "readonly")
-    e = ttk.Entry(output_frame, width=20, font=('Arial',16,'bold'))
-    e.grid(row = 0, column = 1)
-    e.insert(0, "TeamName")
-    e.configure(state = "readonly")
+    style.configure("Treeview", font = ("SaxMono", 15))
+    style.configure("Treeview.Headings", font = ("SaxMono", 30))
+    table = ttk.Treeview(output_frame, columns = ("TeamID", "TeamName"), show = "headings", style = "Treeview")
+    table.column("TeamID", width = 100)
+    table.heading("TeamID", text = "TeamID")
+    table.heading("TeamName", text = "Team Name")
+    for i in teams:
+        table.insert('', tk.END, text = '', values=(f"{i[0]}", f"{i[1]}"), tags = "t")
     
-    for i in range(len(teams)):
-        for j in range(len(teams[0])):
-                
-            e = ttk.Entry(output_frame, width=20, font=('Arial',16,'bold')) 
-            e.grid(row = i + 1, column = j)
-            e.insert(0, f"{teams[i][j]}")
-            e.configure(state = "readonly")
+    table.pack(fill = "both", expand = True)
 
-view_matches = ttk.Button(window, text = "View Matches", command = display_teams)
-view_matches.pack()
+view_teams = ttk.Button(window, text = "View Teams", command = display_teams)
+view_teams.pack()
 
 #Bindings
 output_frame.bind_class('Entry', '<FocusIn>', lambda event: print("works"))
