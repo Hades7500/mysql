@@ -1,30 +1,37 @@
+from datetime import *  # In case gives error, run pip install datetime
+import maskpass  # In case gives error, run pip install maskpass
 import mysql.connector as mycon
-try:
-    username=input("UserName: ")
-    password=input("Password: ")
-    con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
-    cur=con.cursor()
-    cur.execute("use WC2023")
-except:
-    print("Username or Password Doesn't Match")
-    exit()
+from dateutil import parser
 
+while True:
+        username=input("UserName: ")
+        password = maskpass.askpass(prompt="Password: ", mask="*")
+        con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
+        if con.is_connected():
+            cur=con.cursor()
+            cur.execute("use WC2023")
+            break
+        else:
+            print("Username or Password Doesn't Match")
+            continue
+
+def auto_increment():
+    cur.execute("SELECT PID FROM Players")
+    result = cur.fetchall()
+    return [row[0] for row in result]
 def delete():
     ...
 def update():
     ...
 def search():
     ...
-def auto_increment():
-  cur.execute("SELECT PID FROM Players")
-  return [pid for pid in cur[-1]]
 
 #Functions to Insert Records
 def add_TeamB_Details():
     cur1=con.cursor()    # Create a cursor object for the database connection
-    tid=input("Team ID: ")
-    mid=input("Match ID: ")
-    pid=input("Player ID: ")
+    tid=input("Team ID: ").upper()
+    mid=input("Match ID: ").upper()
+    pid=input("Player ID: ").upper()
     rm=int(input("Runs Scored: "))
     bp=int(input("Balls Played: "))
     frs=int(input("Fours: "))
@@ -103,20 +110,19 @@ def add_TeamA_Details():
         con.commit()
     cur1.close()    # Close the cursor
 def add_matches():
-    cur1=con.cursor()
-    m_id=input("Match ID:")
+    m_id=input("Match ID:").upper()
     cur.execute("select tid from teams")
     data=cur.fetchall()
     while True:    
         if data:
             print(data)
-            tA_id=input("TeamA_id:")
+            tA_id=input("TeamA_id:").upper()
             if (tA_id,) not in data:
                 print("TeamA_ID doesn't exist")
                 continue
             else:
                 pass
-            tB_id=input("TeamB_id:")
+            tB_id=input("TeamB_id:").upper()
             if (tB_id,) not in data:
                 print("TeamB_ID doesn't exist")
                 continue
@@ -158,28 +164,38 @@ def add_matches():
         cur.execute(f"update points_table set loses=loses+1 where tid='{tA_id}'")
     else:
         loser=winner="Tie"
-    cur.execuete("select pid from players")
+    cur.execute(f"select pid from players where tid='{tA_id}' or tid='{tB_id}' ")
     data=cur.fetchall()
     while True:
         if data:
             print(data)
-            mvp=input("MVP_PID: ")
+            mvp=input("MVP_PID: ").upper()
             if (mvp,) not in data:
                 continue
             else:
                 break
-    date=input("Date: ")
+    while True:
+        date_string = input("Enter a date (format: DD-MM-YYYY): ")
+        try:
+            parsed_date = parser.parse(date_string, dayfirst=True).date()
+            today = date.today()
+            if parsed_date > today:
+                print("The entered date is a future date.")
+                continue
+            else:
+                break
+        except ValueError:
+            print("Incorrect data format")
     time=input("Time: ")  
     while True:  
-        venue=input("Venue: ")
+        venue=input("Venue: ").title()
         if len(venue)<=30:
             break
     TeamA_Overs=int(input("TeamA_Overs: "))
     TeamB_Overs=int(input("TeamB_Overs: "))
     print()
-    cur.execute("insert into matches values('{}','{}','{}',{},{},{},{},{},{},'{}','{}','{}','{}','{}','{}',{},{})".format(m_id,tA_id,tB_id,TeamA_Score,TeamB_Score,TeamA_Wickets,TeamB_Wickets,TeamA_Extras,TeamB_Extras,loser,winner,mvp,date,time,venue,TeamA_Overs,TeamB_Overs))
-    cur1.execute(f"update players set no_of_mvp = no_of_mvp+1 where PID='{mvp}'")
-    cur1.close()  #Close the cursor
+    cur.execute("insert into matches values('{}','{}','{}',{},{},{},{},{},{},'{}','{}','{}','{}','{}','{}',{},{})".format(m_id,tA_id,tB_id,TeamA_Score,TeamB_Score,TeamA_Wickets,TeamB_Wickets,TeamA_Extras,TeamB_Extras,loser,winner,mvp,parsed_date,time,venue,TeamA_Overs,TeamB_Overs))
+    cur.execute(f"update players set no_of_mvp = no_of_mvp+1 where PID='{mvp}'")
     cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tA_id}'")
     cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tB_id}'")
     xa=TeamA_Score/TeamA_Overs
@@ -187,26 +203,24 @@ def add_matches():
     if winner==tA_id:
         nrr=xa-xb
         nrr=round(nrr,3)
-        print(nrr," Team A NRR")
         cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tA_id}'")
         cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tB_id}'")
     elif winner==tB_id:
         nrr=xb-xa
         nrr=round(nrr,3)
-        print(nrr," Team B NRR")
         cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tB_id}'")
         cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tA_id}'")
     con.commit()
 def add_player():
     while True:
-        pname=input("Player Name: ")
+        pname=input("Player Name: ").upper()
         if len(pname)>30:
             print("Maximum length of player name is 30 characters only ")
             continue
         else:
             break
     while True:
-        pos=input("Position(batter/wicket-keeper/bowler/all-rounder): ")
+        pos=input("Position(batter/wicket-keeper/bowler/all-rounder): ").upper()
         if pos.lower() in ['batter','wicket-keeper','bowler','all-rounder']:
             break
         else:
@@ -216,7 +230,7 @@ def add_player():
         data=cur.fetchall()
         if data:
             print(data)
-            tid=input("TeamID: ")
+            tid=input("TeamID: ").upper()
             if (tid,) not in data:
                 print("TeamID is not in the table")
                 continue
@@ -226,9 +240,9 @@ def add_player():
     cur.execute(f"insert into players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
     con.commit()
 def add_team():
-    tid=input("TeamID: ")
+    tid=input("TeamID: ").upper()
     while True:
-        tname=input("Team Name: ") 
+        tname=input("Team Name: ").upper()
         if len(tname)>30:
             print("Maximum length of team name is 30 characters only ")
             continue
@@ -242,10 +256,8 @@ def add_team():
     con.commit()
 def insert():
     while True:
-        #Prompt the user to enter their choice
         choice=int(input("1.Add Team \n2.Add Player\n3.Add Matches\n4.Add TeamA_Details\n5.Add TeamB_Details\n0.Previous\n(1/2/3/4/5/0): "))
         print()
-        #Check the user's choice and perform the corresponding action
         if choice==1:
             add_team()
         elif choice==2:
@@ -403,7 +415,7 @@ def display_all_players():
     else:
         print("Players not found")
 def display_players_of_a_team():
-    tid=input("TeamID: ")
+    tid=input("TeamID: ").upper()
     cur.execute(f"select * from Players where tid='{tid}'")
     data=cur.fetchall()
     if data:
