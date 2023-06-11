@@ -13,11 +13,23 @@ output_frame.place(x = 100, y = 100)
 
 style = ttk.Style()
 
+
+notebook = ttk.Notebook(window)
+
+tab1 = ttk.Frame(notebook)
+tab2 = ttk.Frame(notebook)
+notebook.add(tab1, text = "Teams")
+notebook.add(tab2, text = "Players")
+
+notebook.pack()
+
 def display_teams():
+    ...
+
     teams = Queries.display_teams()
     style.configure("Treeview", font = ("SaxMono", 15))
     style.configure("Treeview.Headings", font = ("SaxMono", 30))
-    table = ttk.Treeview(output_frame, columns = ("TeamID", "TeamName"), show = "headings", style = "Treeview")
+    table = ttk.Treeview(tab1, columns = ("TeamID", "TeamName"), show = "headings", style = "Treeview")
     table.column("TeamID", width = 100)
     table.heading("TeamID", text = "TeamID")
     table.heading("TeamName", text = "Team Name")

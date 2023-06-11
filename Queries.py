@@ -427,13 +427,10 @@ def display_players_of_a_team():
     else:
         print("Team not Found")
 def display_teams():
-    cur.execute("select * from Teams")
-    data=cur.fetchall()
-    print("TeamID\tTeamName")
-    for row in data:
-        for col in row:
-            print(col,end="\t")
-        print()
+    cur.execute("SELECT * FROM Teams")
+    data = cur.fetchall()
+    return [team for team in data]
+
 def display_menu():
     while True:
         #Prompt the user to enter their choice
