@@ -20,7 +20,7 @@ def display_teams():
     style.configure("style.Treeview", font = ("SaxMono", 15))
     style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
     table = ttk.Treeview(tab2, columns = ("TeamID", "TeamName"), show = "headings", style = "style.Treeview")
-    table.column("TeamID", width = 110, stretch = False)
+    table.column("TeamID", width = 120, stretch = False)
     table.column("TeamName", stretch = False)
     table.heading("TeamID", text = "TeamID", anchor = "w")
     table.heading("TeamName", text = "Team Name", anchor = "w")
@@ -60,7 +60,7 @@ def tab2_widgets():
     add_team = ttk.Button(tab2, text = "+", command = lambda: create_team(team_id, team_name))
     add_team.pack(side = tk.LEFT, fill = "x", expand = 1, anchor = "w")
 # Notebook
-notebook = ttk.Notebook(window)
+notebook = ttk.Notebook(window, width = 325)
 
 tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
