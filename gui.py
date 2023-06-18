@@ -55,7 +55,7 @@ def tab2_widgets():
     team_name = ttk.StringVar()
     tid_entry = ttk.Entry(tab2, textvariable = team_id, width = 15)
     tid_entry.pack(side = tk.LEFT)
-    tname_entry = ttk.Entry(tab2, textvariable = team_name)
+    tname_entry = ttk.Entry(tab2, textvariable = team_name, width = 25)
     tname_entry.pack(side = tk.LEFT)
     add_team = ttk.Button(tab2, text = "+", command = lambda: create_team(team_id, team_name))
     add_team.pack(side = tk.LEFT, fill = "x", expand = 1, anchor = "w")
