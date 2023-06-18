@@ -26,6 +26,12 @@ def update():
 def search():
     ...
 
+def output(data):
+    for row in data:
+        for col in row:
+            print(col,end="\t")
+        print()
+
 #Functions to Insert Records
 def add_TeamB_Details():
     cur1=con.cursor()    # Create a cursor object for the database connection
@@ -203,7 +209,7 @@ def add_matches():
     if winner==tA_id:
         nrr=xa-xb
         nrr=round(nrr,3)
-        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tA_id}'")
+        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tA_id}'") # replace tA_id with winner
         cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tB_id}'")
     elif winner==tB_id:
         nrr=xb-xa
@@ -239,21 +245,11 @@ def add_player():
     print()
     cur.execute(f"insert into players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
     con.commit()
-def add_team():
-    tid=input("TeamID: ").upper()
-    while True:
-        tname=input("Team Name: ").upper()
-        if len(tname)>30:
-            print("Maximum length of team name is 30 characters only ")
-            continue
-        else:
-            break
+def add_team(tid, tname):
+    cur.execute(f"INSERT INTO Teams VALUE ('{tid.upper()}','{tname.capitalize()}')")
+    #cur.execute(f"INSERT INTO points_table (tid) VALUE ('{tid}')")
+    con.commit()
 
-    print()
-    cur.execute("insert into teams values('{}','{}')".format(tid,tname))
-    con.commit()
-    cur.execute(f"insert into points_table(tid) values('{tid}')")
-    con.commit()
 def insert():
     while True:
         choice=int(input("1.Add Team \n2.Add Player\n3.Add Matches\n4.Add TeamA_Details\n5.Add TeamB_Details\n0.Previous\n(1/2/3/4/5/0): "))
@@ -375,10 +371,7 @@ def display_TeamB_Details():
     data=cur.fetchall()
     if data:
         print("TID\tMID\tPID\tRuns Made\tBalls Played\tNo. of Fours\tNo. of Sixes\tStrike Rate\tOvers Bowled\tMaidens\tRuns Conceded\tWickets Taken\tEconomy")
-        for row in data:
-            for col in row:
-                print(col,end="\t")
-            print()
+        
     else:
         print("No Records found")
 def display_TeamA_Details():
@@ -434,7 +427,14 @@ def display_teams():
 def display_menu():
     while True:
         #Prompt the user to enter their choice
-        choice=int(input("1.Display Teams\n2.Display Players of a team\n3.Display All Players\n4.Display All Matches\n5.Display TeamA_Details\n6.Display TeamB_Details\n7.Display Stats\n0.Previous\n(1/2/3/4/5/6/7/0): "))
+        choice=int(input("1.Display Teams\n\
+                         2.Display Players of a team\n\
+                         3.Display All Players\n\
+                         4.Display All Matches\n\
+                         5.Display TeamA_Details\n\
+                         6.Display TeamB_Details\n\
+                         7.Display Stats\n\
+                         0.Previous\n\(1/2/3/4/5/6/7/0): "))
         print()
         #Check the user's choice and perform the corresponding action
         if choice==1:
@@ -473,4 +473,3 @@ def menu():
         elif choice==0:
             print("Bye!!")
             break
-menu()
