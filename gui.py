@@ -35,7 +35,6 @@ def item_select(_):
         print(table.item(i)['values'])
 
 def delete_items(_):
-    # Queries.delete
     for i in table.selection():
         table.delete(i)
 
@@ -60,7 +59,6 @@ def tab2_widgets():
     tname_entry.pack(side = tk.LEFT)
     add_team = ttk.Button(tab2, text = "+", command = lambda: create_team(team_id, team_name))
     add_team.pack(side = tk.LEFT, fill = "x", expand = 1, anchor = "w")
-
 # Notebook
 notebook = ttk.Notebook(window, width = 350)
 
