@@ -10,6 +10,9 @@ ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
 
 style = ttk.Style()
 
+style.configure("style.Treeview", font = ("SaxMono", 15))
+style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
+
 def clear_frame(parent):
    for widgets in parent.winfo_children():
       widgets.destroy()
@@ -17,8 +20,6 @@ def clear_frame(parent):
 def display_teams():
     global table
     teams = Queries.display_teams()
-    style.configure("style.Treeview", font = ("SaxMono", 15))
-    style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
     table = ttk.Treeview(tab2, columns = ("TeamID", "TeamName"), show = "headings", style = "style.Treeview")
     table.column("TeamID", width = 120, stretch = False)
     table.column("TeamName", stretch = False)
@@ -28,6 +29,9 @@ def display_teams():
         table.insert('', tk.END, text = '', values=(f"{i[0]}", f"{i[1]}"))
     
     table.pack(fill = "both", expand = 1, anchor = "w")
+
+def display_matches():
+    table = ttk.Treeview(tab1, columns = ("MatchID", "TeamA", "TeamB", ))
 
 def item_select(_):
     print(table.selection())
