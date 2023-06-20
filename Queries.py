@@ -386,27 +386,15 @@ def display_TeamA_Details():
     else:
         print("No Records found")
 def display_matches():
-    cur.execute("select * from Matches")
-    data=cur.fetchall()
-    if data:
-        print("MID\tTEAM_A TID\tTEAM_B TID\tTEAM_A score\tTEAM_B score\tTEAM_A WICKETS\tTEAM_B WICKETS\tTEAM_A EXTRAS\tTEAM_B EXTRAS\tLOSER\tWINNER\tMAN OF THE MATCH\tDATE\tTIME\tVENUE")
-        for row in data:
-            for col in row:
-                print(col,end="\t")
-            print()
-    else:
-        print("No matches found")
+    cur.execute("SELECT * FROM Matches")
+    data = cur.fetchall()
+    return [match for match in data]
+
 def display_all_players():
-    cur.execute("select * from Players")
-    data=cur.fetchall()
-    if data:
-        print("PID\t\tPName\t\tPosition\tRuns\t\tWickets\t\tHundredst\t\tFifties\t\tFours\t\tSixes\t\tHighest Score\t\tFive Wicket Haul\t\tNo_of_MVP\t\tTID")
-        for row in data:
-            for col in row:
-                print(col,end="\t\t")
-            print()
-    else:
-        print("Players not found")
+    cur.execute("SELECT * FROM Players")
+    data = cur.fetchall()
+    return [player for player in data]
+
 def display_players_of_a_team():
     tid=input("TeamID: ").upper()
     cur.execute(f"select * from Players where tid='{tid}'")
@@ -434,7 +422,8 @@ def display_menu():
                          5.Display TeamA_Details\n\
                          6.Display TeamB_Details\n\
                          7.Display Stats\n\
-                         0.Previous\n\(1/2/3/4/5/6/7/0): "))
+                         0.Previous\n\
+                         (1/2/3/4/5/6/7/0): "))
         print()
         #Check the user's choice and perform the corresponding action
         if choice==1:
