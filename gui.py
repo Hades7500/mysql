@@ -19,9 +19,9 @@ def clear_frame(parent):
 
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
-        notebook.config(width = 1050, height = 400)
+        notebook.config(width = 1150, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
-        notebook.config(width = 400, height = 247)
+        notebook.config(width = 400, height = 246)
     # else:
     #     notebook.configure
 
@@ -37,8 +37,8 @@ def display_teams():
     team_table.column("TeamName", stretch = False)
     team_table.heading("TeamID", text = "TeamID", anchor = "w")
     team_table.heading("TeamName", text = "Team Name", anchor = "w")
-    for i in teams:
-        team_table.insert('', tk.END, text = '', values=(f"{i[0]}", f"{i[1]}"))
+    for team in teams:
+        team_table.insert('', tk.END, text = '', values=(f"{team[0]}", f"{team[1]}"))
 
     team_table.pack(fill = "both", anchor = "w")
 
@@ -46,32 +46,31 @@ def display_matches():
     global matches_table
     matches = Queries.display_matches()
     matches_table = ttk.Treeview(tab1,
-                         columns = ("MID", "TeamA", "TeamB", "Winner", "Loser", "MVP", "Date", "Time", "Venue"),
+                         columns = ("MID", "TeamA", "TeamB", "Winner",
+                                    "Loser", "MVP", "Date", "Time", "Venue"),
                          show = "headings",
                          style = "style.Treeview")
     
-    matches_table.column("MID", width = 120, stretch = False)
-    matches_table.column("TeamA", width = 110, stretch = False)
-    matches_table.column("TeamB", width = 110, stretch = False)
-    matches_table.column("Winner", width = 110, stretch = False)
-    matches_table.column("Loser", width = 110, stretch = False)
-    matches_table.column("MVP", width = 120, stretch = False)
-    matches_table.column("Date", width = 120, stretch = False)
-    matches_table.column("Time", width = 120, stretch = False)
-    matches_table.column("Venue", width = 120, stretch = False)
+    columns = [("MID", 120), ("TeamA", 112), ("TeamB", 112),
+               ("Winner", 112), ("Loser", 112), ("MVP", 120),
+               ("Date", 120), ("Time", 120), ("Venue", 120)]
+    for column in columns:
+        matches_table.column(column[0], width = column[1], stretch = False)
 
-    matches_table.heading("MID", text = "MatchID", anchor = "w")
-    matches_table.heading("TeamA", text = "Team A", anchor = "w")
-    matches_table.heading("TeamB", text = "Team B", anchor = "w")
-    matches_table.heading("Winner", text = "Winner", anchor = "w")
-    matches_table.heading("Loser", text = "Loser", anchor = "w")
-    matches_table.heading("MVP", text = "MVP", anchor = "w")
-    matches_table.heading("Date", text = "Date", anchor = "w")
-    matches_table.heading("Time", text = "Time", anchor = "w")
-    matches_table.heading("Venue", text = "Venue", anchor = "w")
+    headings = [("MID", "MatchID"), ("TeamA", "Team A"), ("TeamB", "Team B"),
+               ("Winner", "Winner"), ("Loser", "Loser"), ("MVP", "MVP"),
+               ("Date", "Date"), ("Time", "Time"), ("Venue", "Venue")]
+    
+    for heading in headings:
+        matches_table.heading(heading[0], text = heading[1], anchor = "w")
 
-
+    for match in matches:
+        matches_table.insert('', tk.END, text = '',
+                             values = (f"{match[0]}", f"{match[1]}", f"{match[2]}", f"{match[3]}",
+                                       f"{match[4]}", f"{match[5]}", f"{match[6]}", f"{match[7]}", f"{match[8]}"))
+    
     matches_table.pack(fill = "both", expand = 1)
+    matches_table.config(height = 20)
 
 def item_select(table):
     print(team_table.selection())
@@ -81,6 +80,9 @@ def item_select(table):
 def delete_items(table):
     for i in table.selection():
         table.delete(i)
+
+def create_match(mid, teama, teamb, winner, loser, mvp, date, time, venue):
+    Queries.add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue)
 
 def create_team(tid, tname):
     if len(tname.get()) == 0 or len(tid.get()) == 0:
@@ -103,13 +105,16 @@ def tab1_widgets():
     date = ttk.StringVar()
     time = ttk.StringVar()
     venue = ttk.StringVar()
-    l = [match_id, team_a, team_b, winner, loser, mvp, date]
-    for i in l:
-        ttk.Entry(tab1, textvariable = i).pack(side = tk.LEFT)
+    entry = [(match_id, 15), (team_a, 14), (team_b, 14), (winner, 14),
+             (loser, 14), (mvp, 15), (date, 15), (time, 15), (venue, 26)]
+    for i in entry:
+        ttk.Entry(tab1, textvariable = i[0], width = i[1]).pack(side = tk.LEFT)
+    ttk.Button(tab1, text = "+",
+               command = lambda: create_match(match_id.get(), team_a.get(), team_b.get(), winner.get(),
+                                              loser.get(), mvp.get(), date.get(), time.get(), venue.get())).pack(side = "left")
 
 def tab2_widgets():
     display_teams()
-
     team_id = ttk.StringVar()
     team_name = ttk.StringVar()
     ttk.Entry(tab2, textvariable = team_id, width = 15).pack(side = tk.LEFT)
@@ -125,9 +130,8 @@ notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
 
 notebook.pack()
-tab2_widgets()
 tab1_widgets()
-display_matches()
+tab2_widgets()
 
 # Bindings
 matches_table.bind("<<TreeviewSelect>>", lambda event: item_select(matches_table))

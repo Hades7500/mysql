@@ -4,6 +4,7 @@ import mysql.connector as mycon
 from dateutil import parser
 
 while True:
+        # add try except to handle incorrect password
         username=input("UserName: ")
         password = maskpass.askpass(prompt="Password: ", mask="*")
         con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
@@ -115,7 +116,7 @@ def add_TeamA_Details():
         cur1.execute(f"update players set five_wicket_hauls=five_wicket_hauls+1 where pid='{pid}'")
         con.commit()
     cur1.close()    # Close the cursor
-def add_matches():
+def add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue):
     m_id=input("Match ID:").upper()
     cur.execute("select tid from teams")
     data=cur.fetchall()
