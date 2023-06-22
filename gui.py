@@ -19,9 +19,9 @@ def clear_frame(parent):
 
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
-        notebook.config(width = 1150, height = 415)
+        notebook.config(width = 1151, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
-        notebook.config(width = 400, height = 246)
+        notebook.config(width = 339, height = 246)
     # else:
     #     notebook.configure
 
@@ -32,7 +32,7 @@ def display_teams():
                               columns = ("TeamID", "TeamName"),
                               show = "headings",
                               style = "style.Treeview")
-    
+
     team_table.column("TeamID", width = 120, stretch = False)
     team_table.column("TeamName", stretch = False)
     team_table.heading("TeamID", text = "TeamID", anchor = "w")
@@ -50,7 +50,7 @@ def display_matches():
                                     "Loser", "MVP", "Date", "Time", "Venue"),
                          show = "headings",
                          style = "style.Treeview")
-    
+
     columns = [("MID", 120), ("TeamA", 112), ("TeamB", 112),
                ("Winner", 112), ("Loser", 112), ("MVP", 120),
                ("Date", 120), ("Time", 120), ("Venue", 120)]
@@ -60,7 +60,7 @@ def display_matches():
     headings = [("MID", "MatchID"), ("TeamA", "Team A"), ("TeamB", "Team B"),
                ("Winner", "Winner"), ("Loser", "Loser"), ("MVP", "MVP"),
                ("Date", "Date"), ("Time", "Time"), ("Venue", "Venue")]
-    
+
     for heading in headings:
         matches_table.heading(heading[0], text = heading[1], anchor = "w")
 
@@ -68,7 +68,7 @@ def display_matches():
         matches_table.insert('', tk.END, text = '',
                              values = (f"{match[0]}", f"{match[1]}", f"{match[2]}", f"{match[3]}",
                                        f"{match[4]}", f"{match[5]}", f"{match[6]}", f"{match[7]}", f"{match[8]}"))
-    
+
     matches_table.pack(fill = "both", expand = 1)
     matches_table.config(height = 20)
 

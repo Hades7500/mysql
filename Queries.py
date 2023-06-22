@@ -1,20 +1,20 @@
-from datetime import *  # In case gives error, run pip install datetime
-import maskpass  # In case gives error, run pip install maskpass
+from datetime import *
+import maskpass
 import mysql.connector as mycon
 from dateutil import parser
 
 while True:
-        # add try except to handle incorrect password
+    try:
         username=input("UserName: ")
         password = maskpass.askpass(prompt="Password: ", mask="*")
-        con=mycon.connect(host="localhost",user=f"{username}",passwd=f"{password}")
-        if con.is_connected():
-            cur=con.cursor()
-            cur.execute("use WC2023")
-            break
-        else:
-            print("Username or Password Doesn't Match")
-            continue
+        con = mycon.connect(host="localhost", user=f"{username}", passwd=f"{password}")
+        cur=con.cursor()
+        cur.execute("USE WC2023")
+        break
+    except:
+        print("Incorrect Username or Password")
+        exit()
+
 
 def auto_increment():
     cur.execute("SELECT PID FROM Players")
@@ -201,7 +201,7 @@ def add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue):
     TeamA_Overs=int(input("TeamA_Overs: "))
     TeamB_Overs=int(input("TeamB_Overs: "))
     print()
-    cur.execute("insert into matches values('{}','{}','{}',{},{},{},{},{},{},'{}','{}','{}','{}','{}','{}',{},{})".format(m_id,tA_id,tB_id,TeamA_Score,TeamB_Score,TeamA_Wickets,TeamB_Wickets,TeamA_Extras,TeamB_Extras,loser,winner,mvp,parsed_date,time,venue,TeamA_Overs,TeamB_Overs))
+    cur.execute("INSERT INTO Matches VALUE ('{}','{}','{}',{},{},{},{},{},{},'{}','{}','{}','{}','{}','{}',{},{})".format(m_id,tA_id,tB_id,TeamA_Score,TeamB_Score,TeamA_Wickets,TeamB_Wickets,TeamA_Extras,TeamB_Extras,loser,winner,mvp,parsed_date,time,venue,TeamA_Overs,TeamB_Overs))
     cur.execute(f"update players set no_of_mvp = no_of_mvp+1 where PID='{mvp}'")
     cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tA_id}'")
     cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tB_id}'")
@@ -218,6 +218,7 @@ def add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue):
         cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tB_id}'")
         cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tA_id}'")
     con.commit()
+
 def add_player():
     while True:
         pname=input("Player Name: ").upper()
@@ -246,6 +247,7 @@ def add_player():
     print()
     cur.execute(f"insert into players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
     con.commit()
+
 def add_team(tid, tname):
     cur.execute(f"INSERT INTO Teams VALUE ('{tid.upper()}','{tname.capitalize()}')")
     #cur.execute(f"INSERT INTO points_table (tid) VALUE ('{tid}')")
@@ -448,7 +450,13 @@ def display_menu():
 def menu():
     while True:
         #Prompt the user to choose an option
-        choice=int(input("1.Display Records\n2.Insert Records\n3.Search Records\n4.Update Records\n5.Delete Record\n0.Exit\n(1/2/3/4/5/0): "))
+        choice=int(input("1.Display Records\n\
+                         2.Insert Records\n\
+                         3.Search Records\n\
+                         4.Update Records\n\
+                         5.Delete Record\n\
+                         0.Exit\n\
+                         (1/2/3/4/5/0): "))
         print()
         if choice==1:
             display_menu()
