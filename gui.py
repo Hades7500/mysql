@@ -25,22 +25,6 @@ def resize_notebook(_):
     # else:
     #     notebook.configure
 
-def display_teams():
-    global team_table
-    teams = Queries.display_teams()
-    team_table = ttk.Treeview(tab2,
-                              columns = ("TeamID", "TeamName"),
-                              show = "headings",
-                              style = "style.Treeview")
-
-    team_table.column("TeamID", width = 120, stretch = False)
-    team_table.column("TeamName", stretch = False)
-    team_table.heading("TeamID", text = "TeamID", anchor = "w")
-    team_table.heading("TeamName", text = "Team Name", anchor = "w")
-    for team in teams:
-        team_table.insert('', tk.END, text = '', values=(f"{team[0]}", f"{team[1]}"))
-
-    team_table.pack(fill = "both", anchor = "w")
 
 def display_matches():
     global matches_table
@@ -71,6 +55,49 @@ def display_matches():
 
     matches_table.pack(fill = "both", expand = 1)
     matches_table.config(height = 20)
+
+def display_teams():
+    global team_table
+    teams = Queries.display_teams()
+    team_table = ttk.Treeview(tab2,
+                              columns = ("TeamID", "TeamName"),
+                              show = "headings",
+                              style = "style.Treeview")
+
+    team_table.column("TeamID", width = 120, stretch = False)
+    team_table.column("TeamName", stretch = False)
+    team_table.heading("TeamID", text = "TeamID", anchor = "w")
+    team_table.heading("TeamName", text = "Team Name", anchor = "w")
+    for team in teams:
+        team_table.insert('', tk.END, text = '', values=(f"{team[0]}", f"{team[1]}"))
+
+    team_table.pack(fill = "both", anchor = "w")
+
+def display_players():
+    global players_table
+    players = Queries.display_all_players()
+    players_table = ttk.Treeview(tab3,
+                         columns = ("PID", "PName", "Position", "Runs",
+                                    "Wickets", "Hundreds", "Fifties", "Highest_Score",
+                                    "Five_Wicket_Hauls", "TID"),
+                         show = "headings",
+                         style = "style.Treeview")
+    
+    columns = [("PID", 120), ("PName", 112), ("Position", 112),
+               ("Runs", 112), ("Wickets", 112), ("Hundreds", 120),
+               ("Fifties", 120), ("Highest_Score", 120), ("Five_Wicket_Hauls", 120), ("TID", 112)]
+    for column in columns:
+        players_table.column(column[0], width = column[1], stretch = False)
+
+    headings = [("PID", "Player ID"), ("PName", "Player Name"), ("Position", "Position"),
+               ("Runs", "Runs"), ("Wickets", "Wickets"), ("Hundreds", "Hundreds"),
+               ("Fifties", "Fifties"), ("Highest_Score", "Highest Score"),
+               ("Five_Wicket_Hauls", "Five Wicket Hauls"), ("TID", "Team ID")]
+    for heading in headings:
+        players_table.heading(heading[0], text = heading[1], anchor = "w")
+
+    players_table.pack(fill = "both", expand = 1)
+    players_table.config(height = 20)
 
 def item_select(table):
     print(team_table.selection())
@@ -126,18 +153,20 @@ notebook = ttk.Notebook(window)
 
 tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
+tab3 = ttk.Frame(notebook)
 notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
+notebook.add(tab3, text = "Players")
 
 notebook.pack()
 tab1_widgets()
 tab2_widgets()
+display_players()
 
 # Bindings
-matches_table.bind("<<TreeviewSelect>>", lambda event: item_select(matches_table))
-matches_table.bind("<Delete>", lambda event: delete_items(matches_table))
-team_table.bind("<<TreeviewSelect>>", lambda event: item_select(team_table))
-team_table.bind("<Delete>", lambda event: delete_items(team_table))
+for table in (matches_table, team_table):
+    table.bind("<<TreeviewSelect>>", lambda event: item_select(table))
+    table.bind("<Delete>", lambda event: delete_items(table))
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
 
 # run

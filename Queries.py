@@ -74,8 +74,8 @@ def add_TeamB_Details():
     if wt>=5:
         cur1.execute(f"update players set five_wicket_hauls=five_wicket_hauls+1 where pid='{pid}'")
         con.commit()
-    cur1.close()    # Close the cursor
 def add_TeamA_Details():
+    cur1.close()    # Close the cursor
     cur1=con.cursor()    # Create a cursor object for the database connection
     tid=input("Team ID: ").upper()
     mid=input("Match ID: ").upper()
