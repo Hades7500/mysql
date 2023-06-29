@@ -11,6 +11,9 @@ while True:
         cur=con.cursor()
         cur.execute("USE WC2023")
         break
+    except KeyboardInterrupt:
+        print("\nquitting")
+        exit()
     except:
         print("Incorrect Username or Password")
         exit()
@@ -255,7 +258,7 @@ def add_team(tid, tname):
 
 def insert():
     while True:
-        choice=int(input("1.Add Team \n2.Add Player\n3.Add Matches\n4.Add TeamA_Details\n5.Add TeamB_Details\n0.Previous\n(1/2/3/4/5/0): "))
+        choice=int(input("1.Add Team\n2.Add Player\n3.Add Matches\n4.Add TeamA_Details\n5.Add TeamB_Details\n0.Previous\n(1/2/3/4/5/0): "))
         print()
         if choice==1:
             add_team()
@@ -272,11 +275,11 @@ def insert():
 
 #Functions to Display Stats
 def Sixes_stats():
-    cur.execute("select pname,t.tid,Sixes from players p, teams t where p.tid=t.tid")
-    data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    cur.execute("SELECT PName,T.TID,Sixes FROM Players P, Teams T WHERE P.TID=T.TID")
+    data = cur.fetchall()
+    data = sorted(data,key=lambda t:t[2], reverse=True)[:5]
     print("Player Name\t\tTeam\t\tSixes")
-    for row in data_1:
+    for row in data:
         for val in row:
             print(val,end="\t\t\t")
         print()
@@ -400,16 +403,10 @@ def display_all_players():
 
 def display_players_of_a_team():
     tid=input("TeamID: ").upper()
-    cur.execute(f"select * from Players where tid='{tid}'")
+    cur.execute(f"SELECT * FROM Players WHERE TID='{tid}'")
     data=cur.fetchall()
-    if data:
-        print("PID\t\tPName\t\tPosition\tNo_of_MVP\tRuns\t\tWickets\t\tTID")
-        for row in data:
-            for col in row:
-                print(col,end="\t\t")
-            print()
-    else:
-        print("Team not Found")
+    return [player for player in data]
+
 def display_teams():
     cur.execute("SELECT * FROM Teams")
     data = cur.fetchall()

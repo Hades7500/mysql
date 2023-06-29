@@ -83,8 +83,8 @@ def display_players():
                          show = "headings",
                          style = "style.Treeview")
     
-    columns = [("PID", 120), ("PName", 112), ("Position", 112),
-               ("Runs", 112), ("Wickets", 112), ("Hundreds", 120),
+    columns = [("PID", 150), ("PName", 112), ("Position", 112),
+               ("Runs", 80), ("Wickets", 112), ("Hundreds", 120),
                ("Fifties", 120), ("Highest_Score", 120), ("Five_Wicket_Hauls", 120), ("TID", 112)]
     for column in columns:
         players_table.column(column[0], width = column[1], stretch = False)
@@ -148,6 +148,10 @@ def tab2_widgets():
     ttk.Entry(tab2, textvariable = team_name, width = 25).pack(side = tk.LEFT)
     ttk.Button(tab2, text = "+", command = lambda: create_team(team_id, team_name)).pack(side = tk.LEFT, anchor = "w")
 
+def tab3_widgets():
+    display_players()
+    
+
 # Notebook
 notebook = ttk.Notebook(window)
 
@@ -170,4 +174,8 @@ for table in (matches_table, team_table):
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
 
 # run
-window.mainloop()
+try:
+    window.mainloop()
+except KeyboardInterrupt:
+    print("\nQuitting")
+    exit()
