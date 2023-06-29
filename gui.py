@@ -13,6 +13,8 @@ style = ttk.Style()
 style.configure("style.Treeview", font = ("SaxMono", 15))
 style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
 
+
+
 def clear_frame(parent):
     for widgets in parent.winfo_children():
         widgets.destroy()
@@ -172,6 +174,12 @@ for table in (matches_table, team_table):
     table.bind("<<TreeviewSelect>>", lambda event: item_select(table))
     table.bind("<Delete>", lambda event: delete_items(table))
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
+
+#scrollbar
+scrollbar_table=ttk.Scrollbar(matches_table,orient='vertical',command=table.yview)
+table.configure(yscrollcommand=scrollbar_table.set)
+scrollbar_table.place(relx=1,rely=0,anchor='ne')
+
 
 # run
 try:
