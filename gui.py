@@ -10,7 +10,7 @@ ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
 
 style = ttk.Style()
 
-style.configure("style.Treeview", font = ("SaxMono", 15))
+style.configure("style.Treeview", font = ("SaxMono", 15), tabposition = tk.NSEW)
 style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
 
 
@@ -24,6 +24,8 @@ def resize_notebook(_):
         notebook.config(width = 1151, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
         notebook.config(width = 339, height = 246)
+    elif notebook.select() == ".!notebook.!frame3":
+        notebook.config(width = 1150, height = 415)
     # else:
     #     notebook.configure
 
@@ -53,7 +55,8 @@ def display_matches():
     for match in matches:
         matches_table.insert('', tk.END, text = '',
                              values = (f"{match[0]}", f"{match[1]}", f"{match[2]}", f"{match[3]}",
-                                       f"{match[4]}", f"{match[5]}", f"{match[6]}", f"{match[7]}", f"{match[8]}"))
+                                       f"{match[4]}", f"{match[5]}", f"{match[6]}", f"{match[7]}",
+                                       f"{match[8]}"))
 
     matches_table.pack(fill = "both", expand = 1)
     matches_table.config(height = 20)
@@ -83,11 +86,11 @@ def display_players():
                                     "Wickets", "Hundreds", "Fifties", "Highest_Score",
                                     "Five_Wicket_Hauls", "TID"),
                          show = "headings",
-                         style = "style.Treeview")
-    
-    columns = [("PID", 150), ("PName", 112), ("Position", 112),
-               ("Runs", 80), ("Wickets", 112), ("Hundreds", 120),
-               ("Fifties", 120), ("Highest_Score", 120), ("Five_Wicket_Hauls", 120), ("TID", 112)]
+                         style = "style.Treeview", selectmode = "browse")
+
+    columns = [("PID", 150), ("PName", 180), ("Position", 135),
+               ("Runs", 80), ("Wickets", 120), ("Hundreds", 125),
+               ("Fifties", 120), ("Highest_Score", 210), ("Five_Wicket_Hauls", 385), ("TID", 112)]
     for column in columns:
         players_table.column(column[0], width = column[1], stretch = False)
 
@@ -101,10 +104,9 @@ def display_players():
     players_table.pack(fill = "both", expand = 1)
     players_table.config(height = 20)
 
-def item_select(table):
-    print(team_table.selection())
-    for i in table.selection():
-        print(table.item(i)['values'])
+def item_select(table_name):
+    for i in table_name.selection():
+        print(table_name.item(i)['values'])
 
 def delete_items(table):
     for i in table.selection():
@@ -139,8 +141,10 @@ def tab1_widgets():
     for i in entry:
         ttk.Entry(tab1, textvariable = i[0], width = i[1]).pack(side = tk.LEFT)
     ttk.Button(tab1, text = "+",
-               command = lambda: create_match(match_id.get(), team_a.get(), team_b.get(), winner.get(),
-                                              loser.get(), mvp.get(), date.get(), time.get(), venue.get())).pack(side = "left")
+               command = lambda: create_match(match_id.get(), team_a.get(),
+                                              team_b.get(), winner.get(),
+                                              loser.get(), mvp.get(), date.get(),
+                                              time.get(), venue.get())).pack(side = "left")
 
 def tab2_widgets():
     display_teams()
@@ -164,7 +168,7 @@ notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
 notebook.add(tab3, text = "Players")
 
-notebook.pack()
+notebook.pack(side = "top")
 tab1_widgets()
 tab2_widgets()
 display_players()
@@ -176,9 +180,9 @@ for table in (matches_table, team_table):
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
 
 #scrollbar
-scrollbar_table=ttk.Scrollbar(matches_table,orient='vertical',command=table.yview)
-table.configure(yscrollcommand=scrollbar_table.set)
-scrollbar_table.place(relx=1,rely=0,anchor='ne')
+scrollbar = ttk.Scrollbar(players_table, orient = 'horizontal', command = players_table.xview)
+players_table.configure(xscrollcommand = scrollbar.set)
+scrollbar.place(relx=0, rely=1, relwidth = 1, anchor = "sw")
 
 
 # run

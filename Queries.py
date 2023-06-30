@@ -258,7 +258,13 @@ def add_team(tid, tname):
 
 def insert():
     while True:
-        choice=int(input("1.Add Team\n2.Add Player\n3.Add Matches\n4.Add TeamA_Details\n5.Add TeamB_Details\n0.Previous\n(1/2/3/4/5/0): "))
+        choice=int(input("1.Add Team\n\
+                         2.Add Player\n\
+                         3.Add Matches\n\
+                         4.Add TeamA_Details\n\
+                         5.Add TeamB_Details\n\
+                         0.Previous\n\
+                         (1/2/3/4/5/0): "))
         print()
         if choice==1:
             add_team()
