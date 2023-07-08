@@ -1,22 +1,19 @@
 from datetime import *
-import maskpass
 import mysql.connector as mycon
 from dateutil import parser
 
-while True:
+def login(username, password):
+    global cur
+    global con
     try:
-        username=input("UserName: ")
-        password = maskpass.askpass(prompt="Password: ", mask="*")
         con = mycon.connect(host="localhost", user=f"{username}", passwd=f"{password}")
         cur=con.cursor()
         cur.execute("USE WC2023")
-        break
-    except KeyboardInterrupt:
-        print("\nquitting")
-        exit()
+        return True
     except:
         print("Incorrect Username or Password")
-        exit()
+        return False
+
 
 
 def auto_increment():
