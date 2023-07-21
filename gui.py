@@ -13,7 +13,42 @@ style = ttk.Style()
 style.configure("style.Treeview", font = ("SaxMono", 15), tabposition = tk.NSEW)
 style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
 
+def login_box():
+    global login_frame
+    login_frame = ttk.Toplevel()
+    login_frame.geometry("300x160")
+    login_frame.maxsize(width = 300, height = 160)
+    login_frame.minsize(width = 300, height = 160)
+    login_frame.title("Login")
 
+    username = ttk.StringVar(value = "Username")
+    password = ttk.StringVar(value = "Password")
+    user_entry = ttk.Entry(login_frame, textvariable = username, foreground = "Light Gray")
+    user_entry.grid(column = 2, row = 1, columnspan = 2, padx = 75, pady = 5)
+    pass_entry = ttk.Entry(login_frame, textvariable = password, foreground = "Light Gray", show = "*")
+    pass_entry.grid(column = 2, row = 2, columnspan = 2, padx = 75, pady = 5)
+    user_entry.bind("<FocusIn>", lambda event: username.set(""))
+    pass_entry.bind("<FocusIn>", lambda event: password.set(""))
+    
+    login_button = ttk.Button(login_frame, text = "Login", command = lambda: login(username.get(), password.get()))
+    login_button.grid(column = 2, row = 3, sticky = "e", padx = 2)
+    pass_entry.bind("<Return>", lambda event: login(username.get(), password.get()))
+    
+    cancel_button = ttk.Button(login_frame, text = "Cancel", command = quit)
+    cancel_button.grid(column = 3, row = 3, sticky = "w", padx = 2)
+    
+    window.wait_window(login_frame)
+
+def login(username, password):
+    result = Queries.login(username, password)
+    login_frame.destroy()
+    login_frame.update()
+    if not(result):
+        exit()
+
+def quit():
+    login_frame.destroy()
+    exit()
 
 def clear_frame(parent):
     for widgets in parent.winfo_children():
@@ -169,6 +204,7 @@ notebook.add(tab2, text = "Teams")
 notebook.add(tab3, text = "Players")
 
 notebook.pack(side = "top")
+login_box()
 tab1_widgets()
 tab2_widgets()
 display_players()
