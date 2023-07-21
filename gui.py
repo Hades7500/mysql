@@ -136,6 +136,12 @@ def display_players():
     for heading in headings:
         players_table.heading(heading[0], text = heading[1], anchor = "w")
 
+    for player in players:
+        players_table.insert('', tk.END, text = "",
+                             values = (f"{player[0]}", f"{player[1]}", f"{player[2]}",
+                                       f"{player[3]}", f"{player[4]}", f"{player[5]}",
+                                       f"{player[6]}", f"{player[7]}", f"{player[8]}", f"{player[9]}", ))
+
     players_table.pack(fill = "both", expand = 1)
     players_table.config(height = 20)
 
