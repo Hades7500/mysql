@@ -56,7 +56,7 @@ def clear_frame(parent):
 
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
-        notebook.config(width = 1151, height = 415)
+        notebook.config(width = 1150, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
         notebook.config(width = 339, height = 246)
     elif notebook.select() == ".!notebook.!frame3":
@@ -69,29 +69,34 @@ def display_matches():
     global matches_table
     matches = Queries.display_matches()
     matches_table = ttk.Treeview(tab1,
-                         columns = ("MID", "TeamA", "TeamB", "Winner",
-                                    "Loser", "MVP", "Date", "Time", "Venue"),
+                         columns = ("MID", "TeamA", "TeamB", "TeamA_Score", "TeamA_Wickets",
+                                    "TeamA_Extras", "TeamB_Score", "TeamB_Wickets", "TeamB_Extras", "Winner",
+                                    "Loser", "MVP", "Date", "Time", "Venue", "TeamA_Overs", "TeamB_Overs"),
                          show = "headings",
                          style = "style.Treeview")
 
     columns = [("MID", 120), ("TeamA", 112), ("TeamB", 112),
+               ("TeamA_Score", 112), ("TeamA_Wickets", 112), ("TeamA_Extras", 112),
+               ("TeamB_Score", 112), ("TeamB_Wickets", 112), ("TeamB_Extras", 112),
                ("Winner", 112), ("Loser", 112), ("MVP", 120),
-               ("Date", 120), ("Time", 120), ("Venue", 120)]
+               ("Date", 120), ("Time", 120), ("Venue", 120),
+               ("TeamA_Overs", 112), ("TeamB_Overs", 112)]
     for column in columns:
         matches_table.column(column[0], width = column[1], stretch = False)
 
     headings = [("MID", "MatchID"), ("TeamA", "Team A"), ("TeamB", "Team B"),
+               ("TeamA_Score", "Team A Score"), ("TeamA_Wickets", "Team A Wickets"), ("TeamA_Extras", "Team A Extras"),
+               ("TeamB_Score", "Team B Score"), ("TeamB_Wickets", "Team B Wickets"), ("TeamB_Extras", "Team B Extras"),
                ("Winner", "Winner"), ("Loser", "Loser"), ("MVP", "MVP"),
-               ("Date", "Date"), ("Time", "Time"), ("Venue", "Venue")]
+               ("Date", "Date"), ("Time", "Time"), ("Venue", "Venue"),
+               ("TeamA_Overs", "Team A Overs"), ("TeamB_Overs", "Team B Overs")]
 
     for heading in headings:
         matches_table.heading(heading[0], text = heading[1], anchor = "w")
 
     for match in matches:
         matches_table.insert('', tk.END, text = '',
-                             values = (f"{match[0]}", f"{match[1]}", f"{match[2]}", f"{match[3]}",
-                                       f"{match[4]}", f"{match[5]}", f"{match[6]}", f"{match[7]}",
-                                       f"{match[8]}"))
+                             values = match)
 
     matches_table.pack(fill = "both", expand = 1)
     matches_table.config(height = 20)
@@ -109,7 +114,7 @@ def display_teams():
     team_table.heading("TeamID", text = "TeamID", anchor = "w")
     team_table.heading("TeamName", text = "Team Name", anchor = "w")
     for team in teams:
-        team_table.insert('', tk.END, text = '', values=(f"{team[0]}", f"{team[1]}"))
+        team_table.insert('', tk.END, text = '', values = team)
 
     team_table.pack(fill = "both", anchor = "w")
 
@@ -138,9 +143,7 @@ def display_players():
 
     for player in players:
         players_table.insert('', tk.END, text = "",
-                             values = (f"{player[0]}", f"{player[1]}", f"{player[2]}",
-                                       f"{player[3]}", f"{player[4]}", f"{player[5]}",
-                                       f"{player[6]}", f"{player[7]}", f"{player[8]}", f"{player[9]}", ))
+                             values = player)
 
     players_table.pack(fill = "both", expand = 1)
     players_table.config(height = 20)
@@ -216,15 +219,16 @@ tab2_widgets()
 display_players()
 
 # Bindings
-for table in (matches_table, team_table):
+for table in [matches_table, team_table]:
     table.bind("<<TreeviewSelect>>", lambda event: item_select(table))
     table.bind("<Delete>", lambda event: delete_items(table))
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
 
 #scrollbar
-scrollbar = ttk.Scrollbar(players_table, orient = 'horizontal', command = players_table.xview)
-players_table.configure(xscrollcommand = scrollbar.set)
-scrollbar.place(relx=0, rely=1, relwidth = 1, anchor = "sw")
+for table in [matches_table, players_table]:
+    scrollbar = ttk.Scrollbar(table, orient = 'horizontal', command = table.xview)
+    table.configure(xscrollcommand = scrollbar.set)
+    scrollbar.place(relx=0, rely=1, relwidth = 1, anchor = "sw")
 
 
 # run

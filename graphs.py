@@ -1,5 +1,5 @@
+import matplotlib.pyplot as plt
 def line():
-    import matplotlib.pyplot as plt
     plt.figure(facecolor='aqua')
     y1=(1,2,3,4,5,6,7,8,9)
     x1=[230,352,0,336,224,268,306,314,265]
@@ -37,7 +37,6 @@ def line():
 
 
 def bar():
-    import matplotlib.pyplot as plt
     label=['IND','NZ','SA','ENG','AUS','WI','SL','BAN','AFG','PAK']
     per=[2516,2169,1906,3198,2701,1969,1621,2278,1831,2025]
     bar=plt.bar(label,per,width = 0.4)
@@ -56,7 +55,6 @@ def bar():
     plt.show()
 
 def pie():
-    import matplotlib.pyplot as plt
     labels='R Sharma','V kohli','Kl rahul','H pandya','Ms dhoni','S dhawan','R pant','R jadeja','K jadhav','V shankar'
     plt.figure(facecolor='aqua')
     votes=[648,443,361,226,273,125,116,77,80,58]
@@ -68,7 +66,6 @@ def pie():
     plt.show()
 
 def pie2():
-    import matplotlib.pyplot as plt
     labels='D Warner','A Finch','S Smith','A Carey','U khawaja','G Maxwell','Nc Nile','M stoinis','M stac','P cummins'
     plt.figure(facecolor='aqua')
     votes=[647,507,379,375,316,177,98,77,68,51]
@@ -83,7 +80,6 @@ def pie2():
 
 
 def pie3():
-    import matplotlib.pyplot as plt
     labels='JE Root','J Bairstow','B stokes','J Roy','E Morgan','J Butler','M ali','L Plunkett','A rashid','J vince'
     plt.figure(facecolor='aqua')
     votes=[556,532,465,443,371,312,134,62,45,40]
@@ -97,7 +93,6 @@ def pie3():
 
 
 def pie4():
-    import matplotlib.pyplot as plt
     labels='KS Williamson','LRPL Taylor','JDS Neesham','C de Grandhomme ','M Guptil','T latham','C munro','H nicholls','M santner'
     plt.figure(facecolor='aqua')
     votes=[578,350,232,190,186,155,125,91,72]
@@ -109,7 +104,6 @@ def pie4():
     plt.show()
 
 def pie5():
-    import matplotlib.pyplot as plt
     labels='Babar Azam','Imam-ul-Haq','Mohammad Hafeez','Haris Sohail','Fakhar Zaman','Imad Wasim','Sarfraz Ahmed','Wahab Riaz','Hasan ali','Shadab khan'
     plt.figure(facecolor='aqua')
     votes=[474,305,253,198,186,162,143,88,43,43]
@@ -121,7 +115,6 @@ def pie5():
     plt.show()
 
 def pie6():
-    import matplotlib.pyplot as plt
     labels='Shakib Al Hasan','Mushfiqur Rahim','Tamim Iqbal','Mahmudullah','Soumya Sarkar','Mosaddek Hossain','Mohammad Saifuddin','Mohammad Mithun','Mehidy Hasan Miraz','Sabbir Rahman'
     plt.figure(facecolor='aqua')
     votes=[606,367,235,219,166,116,87,47,37,36]
@@ -137,7 +130,6 @@ def pie6():
 
 
 def pie7():
-    import matplotlib.pyplot as plt
     labels='N Pooran','S Hope','S Hetmyer','C Gayle','J Holder','C Brathwaite','E Lewis','F Allen','S Ambris'
     plt.figure(facecolor='aqua')
     votes=[367,274,257,242,170,154,131,51,36]
@@ -150,7 +142,6 @@ def pie7():
 
 
 def pie8():
-    import matplotlib.pyplot as plt
     labels='F du Plessis','Q de Kock','HM amla','A Markram','D Miller','A Phehlukwayo','J Duminy','K Rabada'
     plt.figure(facecolor='aqua')
     votes=[387,305,203,140,136,133,70,58]
@@ -162,7 +153,6 @@ def pie8():
     plt.show()
 
 def pie9():
-    import matplotlib.pyplot as plt
     labels='MDKJ Perera','AD Mathews ','FDM Karunaratne','W Fernando','H THirimanne','B Mendis','D de silva','N perera','I Udana'
     plt.figure(facecolor='aqua')
     votes=[273,244,222,203,143,143,108,61,45]
@@ -174,7 +164,6 @@ def pie9():
     plt.show()
 
 def pie10():
-    import matplotlib.pyplot as plt
     labels='Rahmat Shah','Najibullah Zadran','Hashmatullah Shahidi ','Gulbadin Naib','Asghar Afghan','Ikram Alikhil','M Nabi','R Khan','H Zazai','Samiullah Shinwari','Noor Ali'
     plt.figure(facecolor='aqua')
     votes=[254,230,197,194,154,142,107,105,96,74,63]
@@ -248,16 +237,7 @@ while True:
                 elif n==9:
                     pie9()
                 elif n==9:
-                    pie10()
-
-            
-                
-            
+                    pie10()        
 
     else:
         print('Thanks for visiting World cup analysis report')
-
-
-
-
-

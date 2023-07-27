@@ -20,6 +20,7 @@ def auto_increment():
     cur.execute("SELECT PID FROM Players")
     result = cur.fetchall()
     return [row[0] for row in result]
+
 def delete():
     ...
 def update():
