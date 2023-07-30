@@ -2,17 +2,6 @@ import tkinter as tk
 import ttkbootstrap as ttk
 import Queries
 
-window = ttk.Window(themename = "darkly",)
-window.title("World Cup")
-window.geometry("1600x900")
-
-ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
-
-style = ttk.Style()
-
-style.configure("style.Treeview", font = ("SaxMono", 15), tabposition = tk.NSEW)
-style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
-
 def login_box():
     global login_frame
     login_frame = ttk.Toplevel()
@@ -39,16 +28,16 @@ def login_box():
     
     window.wait_window(login_frame)
 
-def login(username, password):
+def login(username: str, password: str):
     result = Queries.login(username, password)
     login_frame.destroy()
-    login_frame.update()
     if not(result):
         exit()
 
 def quit():
-    login_frame.destroy()
+    window.destroy()
     exit()
+
 
 def clear_frame(parent):
     for widgets in parent.winfo_children():
@@ -171,24 +160,28 @@ def create_team(tid, tname):
 
 def tab1_widgets():
     display_matches()
-    match_id = ttk.StringVar()
-    team_a = ttk.StringVar()
-    team_b = ttk.StringVar()
-    winner = ttk.StringVar()
-    loser = ttk.StringVar()
-    mvp = ttk.StringVar()
-    date = ttk.StringVar()
-    time = ttk.StringVar()
-    venue = ttk.StringVar()
+    (match_id, team_a, team_b, teama_score,
+    teama_wickets, teama_extras, teamb_score,
+    teamb_wickets, teamb_extras, winner,
+    loser, mvp, date, time, venue, teama_overs, teamb_overs) = [ttk.StringVar() for _ in range(17)]
+    # team_a = ttk.StringVar()
+    # team_b = ttk.StringVar()
+    # winner = ttk.StringVar()
+    # loser = ttk.StringVar()
+    # mvp = ttk.StringVar()
+    # date = ttk.StringVar()
+    # time = ttk.StringVar()
+    # venue = ttk.StringVar()
     entry = [(match_id, 15), (team_a, 14), (team_b, 14), (winner, 14),
              (loser, 14), (mvp, 15), (date, 15), (time, 15), (venue, 26)]
     for i in entry:
         ttk.Entry(tab1, textvariable = i[0], width = i[1]).pack(side = tk.LEFT)
     ttk.Button(tab1, text = "+",
-               command = lambda: create_match(match_id.get(), team_a.get(),
-                                              team_b.get(), winner.get(),
-                                              loser.get(), mvp.get(), date.get(),
-                                              time.get(), venue.get())).pack(side = "left")
+               command = lambda: create_match(match_id.get(), team_a.get(), team_b.get(), teama_score.get(),
+                                                teama_wickets.get(), teama_extras.get(), teamb_score.get(),
+                                                teamb_wickets.get(), teamb_extras.get(), winner.get(),
+                                                loser.get(), mvp.get(), date.get(), time.get(),
+                                                venue.get(), teama_overs.get(), teamb_overs.get())).pack(side = "left")
 
 def tab2_widgets():
     display_teams()
@@ -202,6 +195,18 @@ def tab3_widgets():
     display_players()
     
 
+window = ttk.Window(themename = "darkly")
+window.title("World Cup")
+window.geometry("1600x900")
+
+ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
+
+style = ttk.Style()
+
+style.configure("style.Treeview", font = ("SaxMono", 15), tabposition = tk.NSEW)
+style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
+
+
 # Notebook
 notebook = ttk.Notebook(window)
 
@@ -212,11 +217,15 @@ notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
 notebook.add(tab3, text = "Players")
 
-notebook.pack(side = "top")
 login_box()
-tab1_widgets()
-tab2_widgets()
-display_players()
+try:
+    notebook.pack(side = "top")
+    notebook.config(width = 1150, height = 415)
+    tab1_widgets()
+    tab2_widgets()
+    display_players()
+except:
+    exit()
 
 # Bindings
 for table in [matches_table, team_table]:
@@ -232,6 +241,7 @@ for table in [matches_table, players_table]:
 
 
 # run
+
 try:
     window.mainloop()
 except KeyboardInterrupt:

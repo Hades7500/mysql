@@ -13,6 +13,7 @@ def login(username, password):
     except:
         print("Incorrect Username or Password")
         return False
+        
 
 
 
@@ -56,7 +57,7 @@ def add_TeamB_Details():
         eco=0
     cur.execute("insert into TeamB_Details values('{}','{}','{}',{},{},{},{},{},{},{},{},{},{})".format(tid,mid,pid,rm,bp,frs,six,st_rate,overs,maiden,rc,wt,eco))
     con.commit()
-    cur1.execute(f"update players set runs=runs+{rm}, wickets=wickets+{wt}, fours=fours+{frs}, sixes=sixes+{six} where pid='{pid}'")
+    cur1.execute(f"UPDATE Players SET runs=runs+{rm}, wickets=wickets+{wt}, fours=fours+{frs}, sixes=sixes+{six} where pid='{pid}'")
     con.commit()
     if rm>=100:
         cur1.execute(f"update players set hundreds=hundreds+1 where pid='{pid}'")
@@ -95,7 +96,7 @@ def add_TeamA_Details():
         eco=(rc/overs)
     else:
         eco=0
-    cur.execute("insert into TeamA_Details values('{}','{}','{}',{},{},{},{},{},{},{},{},{},{})".format(tid,mid,pid,rm,bp,frs,six,st_rate,overs,maiden,rc,wt,eco))
+    cur.execute(f"INSERT INTO TeamA_Details VALUE ('{tid}','{mid}','{pid}','{rm}','{bp}','{frs}','{six}','{st_rate}','{overs}','{maiden}','{rc}','{wt}','{eco}')")
     con.commit()
     cur1.execute(f"update players set runs=runs+{rm}, wickets=wickets+{wt}, fours=fours+{frs}, sixes=sixes+{six} where pid='{pid}'")
     con.commit()
@@ -117,7 +118,11 @@ def add_TeamA_Details():
         cur1.execute(f"update players set five_wicket_hauls=five_wicket_hauls+1 where pid='{pid}'")
         con.commit()
     cur1.close()    # Close the cursor
-def add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue):
+def add_matches(match_id, team_a, team_b, teama_score,
+                teama_wickets, teama_extras, teamb_score,
+                teamb_wickets, teamb_extras, winner,
+                loser, mvp, date, time, venue, teama_overs, teamb_overs):
+    
     m_id=input("Match ID:").upper()
     cur.execute("select tid from teams")
     data=cur.fetchall()
@@ -235,7 +240,7 @@ def add_player():
         else:
             continue
     while True:
-        cur.execute("select tid from teams")
+        cur.execute("SELECT TID FROM TEAMS")
         data=cur.fetchall()
         if data:
             print(data)
@@ -246,7 +251,7 @@ def add_player():
             else:
                 break
     print()
-    cur.execute(f"insert into players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
+    cur.execute(f"INSERT INTO Players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
     con.commit()
 
 def add_team(tid, tname):
@@ -263,7 +268,6 @@ def insert():
                          5.Add TeamB_Details\n\
                          0.Previous\n\
                          (1/2/3/4/5/0): "))
-        print()
         if choice==1:
             add_team()
         elif choice==2:
@@ -353,7 +357,16 @@ def runs_stats():
 def display_Stats_menu():
     while True:
         #Prompt the user to enter their choice
-        choice=int(input("1.Runs\n2.Wickets\n3.Highest Score\n4.Most Hundreds\n5.Most Fifties\n6.Five Wicket Hauls\n7.Sixes\n8.Fours\n0.Back\n(1/2/3/4/5/6/7/8/0): "))
+        choice=int(input("1.Runs\n\
+                         2.Wickets\n\
+                         3.Highest Score\n\
+                         4.Most Hundreds\n\
+                         5.Most Fifties\n\
+                         6.Five Wicket Hauls\n\
+                         7.Sixes\n\
+                         8.Fours\n\
+                         0.Back\n\
+                         (1/2/3/4/5/6/7/8/0): "))
         print()
         #Check the user's choice and perform the corresponding action
         if choice==1:
