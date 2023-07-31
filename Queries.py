@@ -429,6 +429,11 @@ def display_teams():
     data = cur.fetchall()
     return [team for team in data]
 
+def display_points_table():
+    cur.execute("SELECT * FROM Points_Table")
+    data = cur.fetchall()
+    return [points for points in data]
+
 def display_menu():
     while True:
         #Prompt the user to enter their choice
