@@ -45,7 +45,7 @@ def clear_frame(parent):
 
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
-        notebook.config(width = 1150, height = 415)
+        notebook.config(width = 1920, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
         notebook.config(width = 339, height = 246)
     elif notebook.select() == ".!notebook.!frame3":
@@ -160,23 +160,18 @@ def create_team(tid, tname):
 
 def tab1_widgets():
     display_matches()
-    (match_id, team_a, team_b, teama_score,
-    teama_wickets, teama_extras, teamb_score,
-    teamb_wickets, teamb_extras, winner,
-    loser, mvp, date, time, venue, teama_overs, teamb_overs) = [ttk.StringVar() for _ in range(17)]
-    # team_a = ttk.StringVar()
-    # team_b = ttk.StringVar()
-    # winner = ttk.StringVar()
-    # loser = ttk.StringVar()
-    # mvp = ttk.StringVar()
-    # date = ttk.StringVar()
-    # time = ttk.StringVar()
-    # venue = ttk.StringVar()
-    entry = [(match_id, 15), (team_a, 14), (team_b, 14), (winner, 14),
-             (loser, 14), (mvp, 15), (date, 15), (time, 15), (venue, 26)]
+    match_id, team_a, team_b, teama_score,\
+    teama_wickets, teama_extras, teamb_score,\
+    teamb_wickets, teamb_extras, winner,\
+    loser, mvp, date, time, venue, teama_overs, teamb_overs = [ttk.StringVar() for _ in range(17)]
+    entry = [(match_id, 15), (team_a, 14), (team_b, 14), (teama_score, 14),
+             (teama_extras, 14), (teama_wickets, 14),(teamb_score, 14),
+             (teamb_wickets, 14), (teamb_extras, 14), (winner, 14),
+             (loser, 14), (mvp, 15), (date, 15), (time, 15), (venue, 26),
+             (teama_overs, 14), (teamb_overs, 14)]
     for i in entry:
         ttk.Entry(tab1, textvariable = i[0], width = i[1]).pack(side = tk.LEFT)
-    ttk.Button(tab1, text = "+",
+    ttk.Button(tab1, text = "Add Match",
                command = lambda: create_match(match_id.get(), team_a.get(), team_b.get(), teama_score.get(),
                                                 teama_wickets.get(), teama_extras.get(), teamb_score.get(),
                                                 teamb_wickets.get(), teamb_extras.get(), winner.get(),
@@ -224,7 +219,8 @@ try:
     tab1_widgets()
     tab2_widgets()
     display_players()
-except:
+except Exception as err:
+    print(err)
     exit()
 
 # Bindings
@@ -232,6 +228,9 @@ for table in [matches_table, team_table]:
     table.bind("<<TreeviewSelect>>", lambda event: item_select(table))
     table.bind("<Delete>", lambda event: delete_items(table))
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
+
+for table in [matches_table, team_table]:
+    table.bind("<Motion>", "break")
 
 #scrollbar
 for table in [matches_table, players_table]:
