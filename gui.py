@@ -229,7 +229,7 @@ for table in [matches_table, team_table]:
     table.bind("<Delete>", lambda event: delete_items(table))
 notebook.bind("<<NotebookTabChanged>>", resize_notebook)
 
-for table in [matches_table, team_table]:
+for table in [matches_table, team_table, players_table]:
     table.bind("<Motion>", "break")
 
 #scrollbar
