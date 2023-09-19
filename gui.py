@@ -54,6 +54,8 @@ def resize_notebook(_):
     #     notebook.configure
 
 
+
+
 def display_matches():
     global matches_table
     matches = Queries.display_matches()
@@ -137,6 +139,87 @@ def display_players():
     players_table.pack(fill = "both", expand = 1)
     players_table.config(height = 20)
 
+def TeamA_Details():
+    global TeamA_Details
+    TeamA = Queries.display_TeamA_Details()
+    TeamA_Details = ttk.Treeview(tab4,
+                         columns = ("TID", "MID", "PID", "Runs_made",
+                                    "Balls_played", "Fours", "Sixes", "Strike_rate",
+                                    "Over_Bowled", "Runs_conceded","Wickets_Taken","Economy"),
+                         show = "headings",
+                         style = "style.Treeview", selectmode = "browse")
+
+    columns = [("TID",150),("MID",150),("PID", 150), ("Runs_made", 180), ("Balls_played", 135),
+               ("Fours", 80), ("Sixes", 120), ("Strike_rate", 125),
+               ("Over_Bowled", 120), ("Runs_conceded", 210), ("Wickets_Taken", 385), ("Economy", 112)]
+    for column in columns:
+        TeamA_Details.column(column[0], width = column[1], stretch = False)
+
+    headings = [("TID", "Team ID"), ("MID", "Match ID"), ("Balls_played", "Balls_played"),
+               ("Runs_made", "Runs_made"),("Fours", "Fours"), ("Sixes", "Sixes"),
+               ("Strike_rate", "Strike_rate"), ("Over_Bowled", "Over_Bowled"),
+               ("Runs_conceded", "Runs_conceded"), ("Wickets_Taken", "Wickets_Taken"),("Economy","Economy")]
+    for heading in headings:
+        TeamA_Details.heading(heading[0], text = heading[1], anchor = "w")
+
+    for team in TeamA_Details:
+        TeamA_Details.insert('', tk.END, text = '',
+                             values = team)
+    TeamA_Details.pack(fill = "both", expand = 1)
+    TeamA_Details.config(height = 20)
+
+def TeamB_Details():
+    global TeamB_Details
+    TeamB = Queries.display_TeamB_Details()
+    TeamB_Details = ttk.Treeview(tab5,
+                         columns = ("TID", "MID", "PID", "Runs_made",
+                                    "Balls_played", "Fours", "Sixes", "Strike_rate",
+                                    "Over_Bowled", "Runs_conceded","Wickets_Taken","Economy"),
+                         show = "headings",
+                         style = "style.Treeview", selectmode = "browse")
+
+    columns = [("TID",150),("MID",150),("PID", 150), ("Runs_made", 180), ("Balls_played", 135),
+               ("Fours", 80), ("Sixes", 120), ("Strike_rate", 125),
+               ("Over_Bowled", 120), ("Runs_conceded", 210), ("Wickets_Taken", 385), ("Economy", 112)]
+    for column in columns:
+        TeamB_Details.column(column[0], width = column[1], stretch = False)
+
+    headings = [("TID", "Team ID"), ("MID", "Match ID"), ("Balls_played", "Balls_played"),
+               ("Runs_made", "Runs_made"),("Fours", "Fours"), ("Sixes", "Sixes"),
+               ("Strike_rate", "Strike_rate"), ("Over_Bowled", "Over_Bowled"),
+               ("Runs_conceded", "Runs_conceded"), ("Wickets_Taken", "Wickets_Taken"),("Economy","Economy")]
+    for heading in headings:
+        TeamB_Details.heading(heading[0], text = heading[1], anchor = "w")
+
+    TeamB_Details.pack(fill = "both", expand = 1)
+    TeamB_Details.config(height = 20)
+
+def points_table():
+    global points_table
+    points_table = Queries.display_points_table()
+    points_table = ttk.Treeview(tab6,
+                         columns = ("TID","Matches", "Wins", "Losses", "Net_Runrate",
+                                    "Points",),
+                         show = "headings",
+                         style = "style.Treeview", selectmode = "browse")
+
+    columns = [("TID",150),("Matches",150),("Wins", 150), ("Losses", 180), ("Net_Runrate", 135),
+               ("Points", 80)]
+    for column in columns:
+        points_table.column(column[0], width = column[1], stretch = False)
+
+    headings = [("TID", "Table ID"), ("Matches", "Matches"), ("Wins", "Wins"),
+               ("Losses", "Losses"),("Net_Runrate","NRR"),("Points","Points")]
+    for heading in headings:
+        points_table.heading(heading[0], text = heading[1], anchor = "w")
+
+    points_table.pack(fill = "both", expand = 1)
+    points_table.config(height = 20)
+
+
+
+
+
 def item_select(table_name):
     for i in table_name.selection():
         print(table_name.item(i)['values'])
@@ -189,7 +272,14 @@ def tab2_widgets():
 def tab3_widgets():
     display_players()
     
+def tab4_widgets():
+    TeamA_Details()
+    
+def tab5_widgets():
+    TeamB_Details()
 
+def tab6_widgets():
+    points_table()
 window = ttk.Window(themename = "darkly")
 window.title("World Cup")
 window.geometry("1600x900")
