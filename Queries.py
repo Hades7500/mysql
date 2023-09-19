@@ -24,8 +24,7 @@ def auto_increment():
 
 def delete():
     ...
-def update():
-    ...
+
 def search():
     ...
 
@@ -122,107 +121,35 @@ def add_matches(match_id, team_a, team_b, teama_score,
                 teama_wickets, teama_extras, teamb_score,
                 teamb_wickets, teamb_extras, winner,
                 loser, mvp, date, time, venue, teama_overs, teamb_overs):
-    
-    m_id=input("Match ID:").upper()
-    cur.execute("select tid from teams")
-    data=cur.fetchall()
-    while True:    
-        if data:
-            print(data)
-            tA_id=input("TeamA_id:").upper()
-            if (tA_id,) not in data:
-                print("TeamA_ID doesn't exist")
-                continue
-            else:
-                pass
-            tB_id=input("TeamB_id:").upper()
-            if (tB_id,) not in data:
-                print("TeamB_ID doesn't exist")
-                continue
-            else:
-                break
-    while True:
-        TeamA_Score=int(input("TeamA_SCORE: "))
-        if TeamA_Score<=600:
-            break
-    while True:
-        TeamB_Score=int(input("TeamB_SCORE: "))
-        if TeamB_Score<=600:
-            break
-    while True:
-        TeamA_Wickets=int(input("TeamA_WICKETS: "))
-        if 0<=TeamA_Wickets<=10:
-            break
-    while True:
-        TeamB_Wickets=int(input("TeamB_WICKETS: "))
-        if 0<=TeamB_Wickets<=10:
-            break
-    while True:
-        TeamA_Extras=int(input("TeamA_EXTRAS: "))
-        if 0<=TeamA_Extras<=100:
-            break
-    while True:
-        TeamB_Extras=int(input("TeamB_EXTRAS: "))
-        if 0<=TeamB_Extras<=100:
-            break
-    if TeamA_Score>TeamB_Score:
-        loser=tB_id
-        winner=tA_id
-        cur.execute(f"update points_table set wins=wins+1, points=points+2 where tid='{tA_id}'")
-        cur.execute(f"update points_table set loses=loses+1 where tid='{tB_id}'")
-    elif TeamA_Score<TeamB_Score:
-        loser=tA_id
-        winner=tB_id
-        cur.execute(f"update points_table set wins=wins+1, points=points+2 where tid='{tB_id}'")
-        cur.execute(f"update points_table set loses=loses+1 where tid='{tA_id}'")
+    if teama_score > teamb_score:
+        loser = team_b
+        winner = team_a
+        cur.execute(f"UPDATE Points_Table SET Wins = Wins + 1, Points=Points + 2 WHERE TID = '{team_a}'")
+        cur.execute(f"UPDATE Points_Table SET Losses = Losses + 1 WHERE TID = '{team_b}'")
+    elif teama_score<teamb_score:
+        loser=team_a
+        winner=team_b
+        cur.execute(f"update points_table set wins=wins+1, points=points+2 where tid='{team_b}'")
+        cur.execute(f"update points_table set Losses = Losses + 1 where tid='{team_a}'")
     else:
         loser=winner="Tie"
-    cur.execute(f"select pid from players where tid='{tA_id}' or tid='{tB_id}' ")
-    data=cur.fetchall()
-    while True:
-        if data:
-            print(data)
-            mvp=input("MVP_PID: ").upper()
-            if (mvp,) not in data:
-                continue
-            else:
-                break
-    while True:
-        date_string = input("Enter a date (format: DD-MM-YYYY): ")
-        try:
-            parsed_date = parser.parse(date_string, dayfirst=True).date()
-            today = date.today()
-            if parsed_date > today:
-                print("The entered date is a future date.")
-                continue
-            else:
-                break
-        except ValueError:
-            print("Incorrect data format")
-    time=input("Time: ")  
-    while True:  
-        venue=input("Venue: ").title()
-        if len(venue)<=30:
-            break
-    TeamA_Overs=int(input("TeamA_Overs: "))
-    TeamB_Overs=int(input("TeamB_Overs: "))
-    print()
-    cur.execute("INSERT INTO Matches VALUE ('{}','{}','{}',{},{},{},{},{},{},'{}','{}','{}','{}','{}','{}',{},{})".format(m_id,tA_id,tB_id,TeamA_Score,TeamB_Score,TeamA_Wickets,TeamB_Wickets,TeamA_Extras,TeamB_Extras,loser,winner,mvp,parsed_date,time,venue,TeamA_Overs,TeamB_Overs))
-    cur.execute(f"update players set no_of_mvp = no_of_mvp+1 where PID='{mvp}'")
-    cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tA_id}'")
-    cur.execute(f"update points_table set no_of_matches=no_of_matches+1 where tid='{tB_id}'")
-    xa=TeamA_Score/TeamA_Overs
-    xb=TeamB_Score/TeamB_Overs
-    if winner==tA_id:
+
+    cur.execute(f"INSERT INTO Matches VALUE ('{match_id}','{team_a}','{team_b}','{teama_score}','{teamb_score}','{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','{winner}','{loser}','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
+    cur.execute(f"UPDATE Players SET NO_OF_MVP = no_of_mvp+1 where PID='{mvp}'")
+    cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_a}'")
+    cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_b}'")
+    xa=teama_score/teama_overs
+    xb=teamb_score/teamb_overs
+    if winner==team_a:
         nrr=xa-xb
         nrr=round(nrr,3)
-        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tA_id}'") # replace tA_id with winner
-        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tB_id}'")
-    elif winner==tB_id:
+        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{team_a}'") # replace team_a with winner
+        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{team_b}'")
+    elif winner==team_b:
         nrr=xb-xa
         nrr=round(nrr,3)
-        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{tB_id}'")
-        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{tA_id}'")
+        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{team_b}'")
+        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{team_a}'")
     con.commit()
 
 def add_player():
@@ -390,13 +317,10 @@ def display_Stats_menu():
 
 #Functions To Display Records
 def display_TeamB_Details():
-    cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,Fours,Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamB_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
-    data=cur.fetchall()
-    if data:
-        print("TID\tMID\tPID\tRuns Made\tBalls Played\tNo. of Fours\tNo. of Sixes\tStrike Rate\tOvers Bowled\tMaidens\tRuns Conceded\tWickets Taken\tEconomy")
-        
-    else:
-        print("No Records found")
+    cur.execute("SELECT Teams.TID, MID, PNAME, Runs_Made, Balls_Played, Fours, Sixes, Strike_Rate, Overs_Bowled, Maiden, Runs_Conceded, Wickets_Taken, Economy FROM TeamB_details t, Players p, Teams WHERE t.PID = p.PID and t.TID=teams.TID")
+    data = cur.fetchall()
+    return [detail for detail in data]
+
 def display_TeamA_Details():
     cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,t.Fours,t.Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamA_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
     data=cur.fetchall()
@@ -408,6 +332,7 @@ def display_TeamA_Details():
             print()
     else:
         print("No Records found")
+
 def display_matches():
     cur.execute("SELECT * FROM Matches")
     data = cur.fetchall()
@@ -484,8 +409,6 @@ def menu():
         elif choice==3:
             search()
         elif choice==4:
-            update()
-        elif choice==5:
             delete()
         elif choice==0:
             print("Bye!!")
