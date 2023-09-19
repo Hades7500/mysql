@@ -4,11 +4,8 @@ import Queries
 
 def login_box():
     global login_frame
-    login_frame = ttk.Toplevel()
+    login_frame = ttk.Toplevel(title = "Login", resizable = (False, False))
     login_frame.geometry("300x160")
-    login_frame.maxsize(width = 300, height = 160)
-    login_frame.minsize(width = 300, height = 160)
-    login_frame.title("Login")
 
     username = ttk.StringVar(value = "Username")
     password = ttk.StringVar(value = "Password")
@@ -38,23 +35,19 @@ def quit():
     window.destroy()
     exit()
 
-
 def clear_frame(parent):
     for widgets in parent.winfo_children():
         widgets.destroy()
 
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
-        notebook.config(width = 1920, height = 415)
+        notebook.config(width = 1150, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
         notebook.config(width = 339, height = 246)
     elif notebook.select() == ".!notebook.!frame3":
         notebook.config(width = 1150, height = 415)
     # else:
     #     notebook.configure
-
-
-
 
 def display_matches():
     global matches_table
@@ -228,10 +221,31 @@ def delete_items(table):
     for i in table.selection():
         table.delete(i)
 
-def create_match(mid, teama, teamb, winner, loser, mvp, date, time, venue):
-    Queries.add_matches(mid, teama, teamb, winner, loser, mvp, date, time, venue)
+def create_match():
+    match_id, team_a, team_b, teama_score,\
+    teama_wickets, teama_extras, teamb_score,\
+    teamb_wickets, teamb_extras, winner,\
+    loser, mvp, date, time, venue, teama_overs, teamb_overs = [ttk.StringVar() for _ in range(17)]
+    new_match = ttk.Toplevel(title = "Add New Match")
+    data = [("MID", match_id), ("Team A", team_a), ("Team B", team_b),
+            ("Team A Score", teama_score), ("Team A Extras", teama_extras), ("Team A Wickets", teama_wickets),
+            ("Team B Score",teamb_score), ("Team B Wickets", teamb_wickets), ("Team B Extras", teamb_extras),
+            ("Winner", winner), ("Loser", loser), ("MVP", mvp),
+            ("Date", date), ("Time", time), ("Venue", venue),
+            ("Team A Overs", teama_overs), ("Team B Overs", teamb_overs)]
+    for row_num, column_data in enumerate(data, 1):
+        ttk.Label(new_match, text = column_data[0]).grid(column = 0, row = row_num)
+        ttk.Entry(new_match, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
+    
+    arguments = (match_id.get(), team_a.get(), team_b.get(), teama_score.get(),\
+                 teama_wickets.get(), teama_extras.get(), teamb_score.get(),\
+                 teamb_wickets.get(), teamb_extras.get(), winner.get(),\
+                 loser.get(), mvp.get(), date.get(), time.get(), venue.get(), teama_overs.get(), teamb_overs.get())
+    
+    ttk.Button(new_match, text = "Add Match", command = lambda: Queries.add_matches(*arguments)).grid(column = 0, columnspan = 2, pady = 5)
 
 def create_team(tid, tname):
+    # TODO: Create Popup error box to display errors
     if len(tname.get()) == 0 or len(tid.get()) == 0:
         ttk.Label(tab2, text = "Enter valid tid or tname").pack()
     elif len(tname.get()) > 30:
@@ -243,23 +257,8 @@ def create_team(tid, tname):
 
 def tab1_widgets():
     display_matches()
-    match_id, team_a, team_b, teama_score,\
-    teama_wickets, teama_extras, teamb_score,\
-    teamb_wickets, teamb_extras, winner,\
-    loser, mvp, date, time, venue, teama_overs, teamb_overs = [ttk.StringVar() for _ in range(17)]
-    entry = [(match_id, 15), (team_a, 14), (team_b, 14), (teama_score, 14),
-             (teama_extras, 14), (teama_wickets, 14),(teamb_score, 14),
-             (teamb_wickets, 14), (teamb_extras, 14), (winner, 14),
-             (loser, 14), (mvp, 15), (date, 15), (time, 15), (venue, 26),
-             (teama_overs, 14), (teamb_overs, 14)]
-    for i in entry:
-        ttk.Entry(tab1, textvariable = i[0], width = i[1]).pack(side = tk.LEFT)
     ttk.Button(tab1, text = "Add Match",
-               command = lambda: create_match(match_id.get(), team_a.get(), team_b.get(), teama_score.get(),
-                                                teama_wickets.get(), teama_extras.get(), teamb_score.get(),
-                                                teamb_wickets.get(), teamb_extras.get(), winner.get(),
-                                                loser.get(), mvp.get(), date.get(), time.get(),
-                                                venue.get(), teama_overs.get(), teamb_overs.get())).pack(side = "left")
+               command = lambda: create_match()).pack()
 
 def tab2_widgets():
     display_teams()
@@ -291,26 +290,32 @@ style = ttk.Style()
 style.configure("style.Treeview", font = ("SaxMono", 15), tabposition = tk.NSEW)
 style.configure("style.Treeview.Heading", font = ("SaxMono", 20))
 
-
 # Notebook
 notebook = ttk.Notebook(window)
 
 tab1 = ttk.Frame(notebook)
 tab2 = ttk.Frame(notebook)
 tab3 = ttk.Frame(notebook)
+tab4 = ttk.Frame(notebook)
+tab5 = ttk.Frame(notebook)
+tab6 = ttk.Frame(notebook)
 notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
 notebook.add(tab3, text = "Players")
+notebook.add(tab4, text = "Team A Details")
+notebook.add(tab5, text = "Team B Details")
+notebook.add(tab6, text = "Points")
 
 login_box()
+# Code continues executing and tries to use mySQL even after entering wrong password is entered
+# throws error because mySQL cursor does not exist
 try:
     notebook.pack(side = "top")
     notebook.config(width = 1150, height = 415)
     tab1_widgets()
     tab2_widgets()
     display_players()
-except Exception as err:
-    print(err)
+except Exception:
     exit()
 
 # Bindings
@@ -327,7 +332,6 @@ for table in [matches_table, players_table]:
     scrollbar = ttk.Scrollbar(table, orient = 'horizontal', command = table.xview)
     table.configure(xscrollcommand = scrollbar.set)
     scrollbar.place(relx=0, rely=1, relwidth = 1, anchor = "sw")
-
 
 # run
 
