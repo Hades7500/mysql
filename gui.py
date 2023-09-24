@@ -226,10 +226,14 @@ def delete_items(table):
         table.delete(i)
 
 def create_match():
-    match_id, team_a, team_b, teama_score,\
-    teama_wickets, teama_extras, teamb_score,\
-    teamb_wickets, teamb_extras, winner,\
-    loser, mvp, date, time, venue, teama_overs, teamb_overs = [ttk.StringVar() for _ in range(17)]
+    match_id, team_a, team_b, winner,\
+    loser, mvp, date, time, venue = [ttk.StringVar() for _ in range(9)]
+    
+    teama_score, teama_wickets, teama_extras, teamb_score,\
+    teamb_wickets, teamb_extras = [ttk.IntVar() for _ in range(6)]
+
+    teama_overs, teamb_overs = [ttk.DoubleVar() for _ in range(2)]
+
     new_match = ttk.Toplevel(title = "Add New Match")
     data = [("MID", match_id), ("Team A", team_a), ("Team B", team_b),
             ("Team A Score", teama_score), ("Team A Extras", teama_extras), ("Team A Wickets", teama_wickets),
@@ -241,12 +245,11 @@ def create_match():
         ttk.Label(new_match, text = column_data[0]).grid(column = 0, row = row_num)
         ttk.Entry(new_match, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
     
-    arguments = (match_id.get(), team_a.get(), team_b.get(), teama_score.get(),\
-                 teama_wickets.get(), teama_extras.get(), teamb_score.get(),\
-                 teamb_wickets.get(), teamb_extras.get(), winner.get(),\
-                 loser.get(), mvp.get(), date.get(), time.get(), venue.get(), teama_overs.get(), teamb_overs.get())
-    
-    ttk.Button(new_match, text = "Add Match", command = lambda: Queries.add_matches(*arguments)).grid(column = 0, columnspan = 2, pady = 5)
+    arguments = (match_id, team_a, team_b, teama_score,\
+                 teama_wickets, teama_extras, teamb_score,\
+                 teamb_wickets, teamb_extras, \
+                 mvp, date, time, venue, teama_overs, teamb_overs)
+    ttk.Button(new_match, text = "Add Match", command = lambda: Queries.add_matches(*(var.get() for var in arguments))).grid(column = 0, columnspan = 2, pady = 5)
 
 # def check_match_details(match_id, team_a, team_b, teama_score,
 #                 teama_wickets, teama_extras, teamb_score,

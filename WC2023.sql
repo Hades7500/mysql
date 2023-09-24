@@ -81,12 +81,12 @@ CREATE TABLE `TeamB_Details` (
 ) ENGINE = INNODB;
 
 CREATE TABLE `Points_Table` (
-    `Matches` INT(2) NOT NULL,
-    `Wins` INT(2) NOT NULL,
-    `Losses` INT(2) NOT NULL,
-    `Net_Run_Rate` FLOAT(5,3) NOT NULL,
-    `Points` INT(2) NOT NULL,
-    `TID` CHAR(3) NOT NULL 
+    `No_Of_Matches` INT(2),
+    `Wins` INT(2),
+    `Losses` INT(2),
+    `Net_Run_Rate` FLOAT(5,3),
+    `Points` INT(2),
+    `TID` CHAR(3) 
 ) ENGINE = INNODB;
 
 ALTER TABLE `Players` ADD CONSTRAINT `fk_Players_TID` FOREIGN KEY(`TID`)

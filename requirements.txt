@@ -1,5 +1,3 @@
-maskpass
 mysql-connector-python
-python-dateutil
 matplotlib
 
