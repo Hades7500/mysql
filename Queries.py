@@ -1,6 +1,5 @@
 from datetime import *
 import mysql.connector as mycon
-from dateutil import parser
 
 def login(username, password):
     global cur
@@ -134,7 +133,7 @@ def add_matches(match_id, team_a, team_b, teama_score,
     else:
         loser=winner="Tie"
 
-    cur.execute(f"INSERT INTO Matches VALUE ('{match_id}','{team_a}','{team_b}','{teama_score}','{teamb_score}','{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','{winner}','{loser}','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
+    cur.execute(f"INSERT INTO Matches VALUE ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','{winner}','{loser}','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
     cur.execute(f"UPDATE Players SET NO_OF_MVP = no_of_mvp+1 where PID='{mvp}'")
     cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_a}'")
     cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_b}'")
@@ -183,7 +182,7 @@ def add_player():
 
 def add_team(tid, tname):
     cur.execute(f"INSERT INTO Teams VALUE ('{tid.upper()}','{tname.capitalize()}')")
-    #cur.execute(f"INSERT INTO points_table (tid) VALUE ('{tid}')")
+    cur.execute(f"INSERT INTO Points_Table (TID) VALUE ('{tid}')")
     con.commit()
 
 def insert():
@@ -334,12 +333,12 @@ def display_TeamA_Details():
         print("No Records found")
 
 def display_matches():
-    cur.execute("SELECT * FROM Matches")
+    cur.execute("SELECT * FROM Matches ORDER BY LENGTH(MID), MID")
     data = cur.fetchall()
     return [match for match in data]
 
 def display_all_players():
-    cur.execute("SELECT * FROM Players")
+    cur.execute("SELECT * FROM Players ORDER BY LENGTH(PID), PID")
     data = cur.fetchall()
     return [player for player in data]
 

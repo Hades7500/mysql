@@ -39,11 +39,19 @@ def clear_frame(parent):
     for widgets in parent.winfo_children():
         widgets.destroy()
 
+def raise_error(msg):
+    error = ttk.Toplevel(title = "Error", resizable = (False, False))
+
+    error.geometry("300x160")
+    ttk.Label(error, text = msg).pack(pady = 20)
+    ttk.Button(error, text = "Ok", command = error.destroy).pack()
+
+
 def resize_notebook(_):
     if notebook.select() == ".!notebook.!frame":
         notebook.config(width = 1150, height = 415)
     elif notebook.select() == ".!notebook.!frame2":
-        notebook.config(width = 339, height = 246)
+        notebook.config(width = 300, height = 246)
     elif notebook.select() == ".!notebook.!frame3":
         notebook.config(width = 1150, height = 415)
     # else:
@@ -60,11 +68,11 @@ def display_matches():
                          style = "style.Treeview")
 
     columns = [("MID", 120), ("TeamA", 112), ("TeamB", 112),
-               ("TeamA_Score", 112), ("TeamA_Wickets", 112), ("TeamA_Extras", 112),
-               ("TeamB_Score", 112), ("TeamB_Wickets", 112), ("TeamB_Extras", 112),
-               ("Winner", 112), ("Loser", 112), ("MVP", 120),
-               ("Date", 120), ("Time", 120), ("Venue", 120),
-               ("TeamA_Overs", 112), ("TeamB_Overs", 112)]
+               ("TeamA_Score", 198), ("TeamA_Wickets", 242), ("TeamA_Extras", 220),
+               ("TeamB_Score", 198), ("TeamB_Wickets", 242), ("TeamB_Extras", 220),
+               ("Winner", 112), ("Loser", 112), ("MVP", 100),
+               ("Date", 100), ("Time", 100), ("Venue", 176),
+               ("TeamA_Overs", 198), ("TeamB_Overs", 198)]
     for column in columns:
         matches_table.column(column[0], width = column[1], stretch = False)
 
@@ -209,10 +217,6 @@ def points_table():
     points_table.pack(fill = "both", expand = 1)
     points_table.config(height = 20)
 
-
-
-
-
 def item_select(table_name):
     for i in table_name.selection():
         print(table_name.item(i)['values'])
@@ -244,29 +248,42 @@ def create_match():
     
     ttk.Button(new_match, text = "Add Match", command = lambda: Queries.add_matches(*arguments)).grid(column = 0, columnspan = 2, pady = 5)
 
-def create_team(tid, tname):
-    # TODO: Create Popup error box to display errors
-    if len(tname.get()) == 0 or len(tid.get()) == 0:
-        ttk.Label(tab2, text = "Enter valid tid or tname").pack()
-    elif len(tname.get()) > 30:
-        ttk.Label(tab2, text = "Lenth of Team Name cant be greater than 30").pack(side = "bottom")
+# def check_match_details(match_id, team_a, team_b, teama_score,
+#                 teama_wickets, teama_extras, teamb_score,
+#                 teamb_wickets, teamb_extras, winner,
+#                 loser, mvp, date, time, venue, teama_overs, teamb_overs):
+#     if len(match_id) or len(team_a)
+
+def create_team():
+    tid, tname = (ttk.StringVar() for _ in range(2))
+    new_team = ttk.Toplevel(title = "Add New Team")
+    data = [("TID", tid), ("TName", tname)]
+    for row_num, column_data in enumerate(data, 1):
+        ttk.Label(new_team, text = column_data[0]).grid(column = 0, row = row_num)
+        ttk.Entry(new_team, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
+
+    ttk.Button(new_team, text = "Add Team", command = lambda: check_team_details(tid.get(), tname.get(), new_team)).grid(column = 0, columnspan = 2, pady = 5)
+
+def check_team_details(tid, tname, toplevel_window):
+    if len(tname) == 0 or len(tid) == 0:
+        raise_error("Invalid TID or TName")
+    elif len(tname) > 30:
+        raise_error("Lenth of Team Name cant be greater than 30")
     else:
-        Queries.add_team(tid.get(), tname.get())
+        Queries.add_team(tid, tname)
+        toplevel_window.destroy()
         clear_frame(tab2)
         tab2_widgets()
 
 def tab1_widgets():
     display_matches()
     ttk.Button(tab1, text = "Add Match",
-               command = lambda: create_match()).pack()
+               command = create_match).pack()
 
 def tab2_widgets():
     display_teams()
-    team_id = ttk.StringVar()
-    team_name = ttk.StringVar()
-    ttk.Entry(tab2, textvariable = team_id, width = 15).pack(side = tk.LEFT)
-    ttk.Entry(tab2, textvariable = team_name, width = 25).pack(side = tk.LEFT)
-    ttk.Button(tab2, text = "+", command = lambda: create_team(team_id, team_name)).pack(side = tk.LEFT, anchor = "w")
+    ttk.Button(tab2, text = "Add Team",
+               command = create_team).pack()
 
 def tab3_widgets():
     display_players()
