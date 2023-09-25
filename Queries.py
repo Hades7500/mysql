@@ -330,7 +330,7 @@ def display_TeamB_Details():
 def display_TeamA_Details():
     cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,t.Fours,t.Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamA_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
     data=cur.fetchall()
-    return[detial for detial in data]
+    return[detail for detail in data]
 def display_matches():
     cur.execute("SELECT * FROM Matches ORDER BY LENGTH(MID), MID")
     data = cur.fetchall()
