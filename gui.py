@@ -5,7 +5,7 @@ import Queries
 def login_box():
     global login_frame
     login_frame = ttk.Toplevel(title = "Login", resizable = (False, False))
-    login_frame.geometry("300x160")
+    login_frame.geometry(f"300x160+{int(SCREEN_WIDTH/2) - 150}+{int(SCREEN_HEIGHT/2) - 80}")
 
     username = ttk.StringVar(value = "Username")
     password = ttk.StringVar(value = "Password")
@@ -41,8 +41,7 @@ def clear_frame(parent):
 
 def raise_error(msg):
     error = ttk.Toplevel(title = "Error", resizable = (False, False))
-
-    error.geometry("300x160")
+    error.geometry(f"300x160+{int(SCREEN_WIDTH/2) - 150}+{int(SCREEN_HEIGHT/2) - 80}")
     ttk.Label(error, text = msg).pack(pady = 20)
     ttk.Button(error, text = "Ok", command = error.destroy).pack()
 
@@ -252,26 +251,21 @@ def create_match():
                  teama_wickets, teama_extras, teamb_score,\
                  teamb_wickets, teamb_extras, \
                  mvp, date.entry, time, venue, teama_overs, teamb_overs)
-    ttk.Button(new_match, text = "Add Match", command = lambda: check_match_details(*(var.get() for var in arguments), arguments, new_match)).grid(column = 0, columnspan = 2, pady = 5)
+    ttk.Button(new_match, text = "Add Match", command = lambda: check_match_details(arguments, new_match)).grid(column = 0, columnspan = 2, pady = 5)
 
-def check_match_details(match_id, team_a, team_b, teama_score,
-                teama_wickets, teama_extras, teamb_score,
-                teamb_wickets, teamb_extras, mvp, date,
-                time, venue, teama_overs, teamb_overs, arguments, toplevel_window):
+def check_match_details(arguments, toplevel_window):
     
     teams = dict(Queries.display_teams())
     players = Queries.display_all_players()
-    if  (team_a not in teams) or (team_b not in teams):
+    if  (arguments[1].get() not in teams) or (arguments[2].get() not in teams):
         raise_error("Team Not Found")
-    elif not len([player for player in players if player[0] == mvp]):
+    elif not len([player for player in players if player[0] == arguments[9].get()]):
         raise_error("Player Not Found")
     else:
         Queries.add_matches(*(var.get() for var in arguments))
         toplevel_window.destroy()
         clear_frame(tab1)
         tab1_widgets()
-
-        
 
 def create_team():
     tid, tname = (ttk.StringVar() for _ in range(2))
@@ -294,6 +288,30 @@ def check_team_details(tid, tname, toplevel_window):
         clear_frame(tab2)
         tab2_widgets()
 
+def add_player():
+    pid, pname, position, tid = [ttk.StringVar() for _ in range(4)]
+
+    data = [("PID", pid), ("PName", pname), ("Position", position), ("TID", tid)]
+    
+    new_player = ttk.Toplevel(title = "Add New Player")
+    for row_num, column_data in enumerate(data, 1):
+        ttk.Label(new_player, text = column_data[0]).grid(column = 0, row = row_num)
+        ttk.Entry(new_player, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
+
+    arguments = (pid, pname, position, tid)
+
+    ttk.Button(new_player, text = "Add Player", command = lambda: check_player_details(arguments, new_player)).grid(column = 0, columnspan = 2, pady = 5)
+
+def check_player_details(arguments, toplevel_window):
+    print(arguments[0].get())
+    if len(arguments[0].get()) == 0 or len(arguments[1].get()) == 0:
+        raise_error("Invalid PID or PName")
+    else:
+        Queries.add_player(*(var.get() for var in arguments))
+        toplevel_window.destroy()
+        clear_frame(tab3)
+        tab3_widgets()
+
 def tab1_widgets():
     display_matches()
     ttk.Button(tab1, text = "Add Match",
@@ -306,6 +324,8 @@ def tab2_widgets():
 
 def tab3_widgets():
     display_players()
+    ttk.Button(tab3, text = "Add Player",
+               command = add_player).pack()
     
 def tab4_widgets():
     TeamA_Details()
@@ -315,8 +335,11 @@ def tab5_widgets():
 
 def tab6_widgets():
     points_table()
+
 window = ttk.Window(themename = "darkly")
 window.title("World Cup")
+SCREEN_HEIGHT = window.winfo_screenheight()
+SCREEN_WIDTH = window.winfo_screenwidth()
 window.geometry("1600x900")
 
 ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
@@ -350,7 +373,7 @@ try:
     notebook.config(width = 1150, height = 415)
     tab1_widgets()
     tab2_widgets()
-    display_players()
+    tab3_widgets()
 except Exception:
     exit()
 
