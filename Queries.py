@@ -143,20 +143,20 @@ def add_matches(match_id, team_a, team_b, teama_score,
         cur.execute(f"UPDATE Points_Table SET Points = Points + 1 WHERE TID = '{team_a}' OR TID = '{team_b}'")
 
     cur.execute(f"UPDATE Players SET NO_OF_MVP = no_of_mvp+1 where PID='{mvp}'")
-    cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_a}'")
-    cur.execute(f"UPDATE Points_Table SET Matches = no_of_matches+1 where tid='{team_b}'")
+    cur.execute(f"UPDATE Points_Table SET No_Of_Matches = no_of_matches+1 where tid='{team_a}'")
+    cur.execute(f"UPDATE Points_Table SET No_Of_Matches = no_of_matches+1 where tid='{team_b}'")
     xa=teama_score/teama_overs
     xb=teamb_score/teamb_overs
     if winner==team_a:
         nrr=xa-xb
         nrr=round(nrr,3)
-        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{team_a}'") # replace team_a with winner
-        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{team_b}'")
+        cur.execute(f"update Points_Table set Net_Run_Rate = Net_Run_Rate+{nrr} where tid='{team_a}'") # replace team_a with winner
+        cur.execute(f"update Points_Table set Net_Run_Rate = Net_Run_Rate-{nrr} where tid='{team_b}'")
     elif winner==team_b:
         nrr=xb-xa
         nrr=round(nrr,3)
-        cur.execute(f"update points_table set nrr=nrr+{nrr} where tid='{team_b}'")
-        cur.execute(f"update points_table set nrr=nrr-{nrr} where tid='{team_a}'")
+        cur.execute(f"update points_table set Net_Run_Rate = Net_Run_Rate+{nrr} where tid='{team_b}'")
+        cur.execute(f"update points_table set Net_Run_Rate = Net_Run_Rate-{nrr} where tid='{team_a}'")
     con.commit()
 
 def add_player():

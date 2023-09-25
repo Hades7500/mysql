@@ -244,18 +244,34 @@ def create_match():
     for row_num, column_data in enumerate(data, 1):
         ttk.Label(new_match, text = column_data[0]).grid(column = 0, row = row_num)
         ttk.Entry(new_match, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
-    
+    date = ttk.DateEntry(new_match)
+    date.grid(column = 1, row = 13, padx = 10)
+
+
     arguments = (match_id, team_a, team_b, teama_score,\
                  teama_wickets, teama_extras, teamb_score,\
                  teamb_wickets, teamb_extras, \
-                 mvp, date, time, venue, teama_overs, teamb_overs)
-    ttk.Button(new_match, text = "Add Match", command = lambda: Queries.add_matches(*(var.get() for var in arguments))).grid(column = 0, columnspan = 2, pady = 5)
+                 mvp, date.entry, time, venue, teama_overs, teamb_overs)
+    ttk.Button(new_match, text = "Add Match", command = lambda: check_match_details(*(var.get() for var in arguments), arguments, new_match)).grid(column = 0, columnspan = 2, pady = 5)
 
-# def check_match_details(match_id, team_a, team_b, teama_score,
-#                 teama_wickets, teama_extras, teamb_score,
-#                 teamb_wickets, teamb_extras, winner,
-#                 loser, mvp, date, time, venue, teama_overs, teamb_overs):
-#     if len(match_id) or len(team_a)
+def check_match_details(match_id, team_a, team_b, teama_score,
+                teama_wickets, teama_extras, teamb_score,
+                teamb_wickets, teamb_extras, mvp, date,
+                time, venue, teama_overs, teamb_overs, arguments, toplevel_window):
+    
+    teams = dict(Queries.display_teams())
+    players = Queries.display_all_players()
+    if  (team_a not in teams) or (team_b not in teams):
+        raise_error("Team Not Found")
+    elif not len([player for player in players if player[0] == mvp]):
+        raise_error("Player Not Found")
+    else:
+        Queries.add_matches(*(var.get() for var in arguments))
+        toplevel_window.destroy()
+        clear_frame(tab1)
+        tab1_widgets()
+
+        
 
 def create_team():
     tid, tname = (ttk.StringVar() for _ in range(2))
