@@ -324,22 +324,13 @@ def display_Stats_menu():
 
 #Functions To Display Records
 def display_TeamB_Details():
-    cur.execute("SELECT Teams.TID, MID, PNAME, Runs_Made, Balls_Played, Fours, Sixes, Strike_Rate, Overs_Bowled, Maiden, Runs_Conceded, Wickets_Taken, Economy FROM TeamB_details t, Players p, Teams WHERE t.PID = p.PID and t.TID=teams.TID")
-    data = cur.fetchall()
-    return [detail for detail in data]
-
+    cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,Fours,Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamB_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
+    data=cur.fetchall()
+    return[detail for detail in data]
 def display_TeamA_Details():
     cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,t.Fours,t.Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamA_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
     data=cur.fetchall()
-    if data:
-        print("TID\tMID\tPID\tRuns Made\tBalls Played\tNo. of Fours\tNo. of Sixes\tStrike Rate\tOvers Bowled\tMaidens\tRuns Conceded\tWickets Taken\tEconomy")
-        for row in data:
-            for col in row:
-                print(col,end="\t")
-            print()
-    else:
-        print("No Records found")
-
+    return[detial for detial in data]
 def display_matches():
     cur.execute("SELECT * FROM Matches ORDER BY LENGTH(MID), MID")
     data = cur.fetchall()
