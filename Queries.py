@@ -135,11 +135,11 @@ def add_matches(match_id, team_a, team_b, teama_score,
         cur.execute(f"update points_table set Losses = Losses + 1 where tid='{team_a}'")
         cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','{winner}','{loser}','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
     elif teamb_overs < 50 and teamb_wickets < 10 and teamb_score < teama_score:
-        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','NULL','NULL','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
+        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}',NULL,NULL,'{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
     elif teama_overs < 50 and teama_wickets < 10:
-        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','NULL','NULL','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")        
+        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}',NULL,NULL,'{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")        
     elif teama_score == teamb_score:
-        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}','NULL','NULL','{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
+        cur.execute(f"INSERT INTO Matches VALUES ('{match_id}','{team_a}','{team_b}',{teama_score},{teamb_score},'{teama_wickets}','{teamb_wickets}','{teama_extras}','{teamb_extras}',NULL,NULL,'{mvp}','{date}','{time}','{venue}','{teama_overs}','{teamb_overs}')")
         cur.execute(f"UPDATE Points_Table SET Points = Points + 1 WHERE TID = '{team_a}' OR TID = '{team_b}'")
 
     cur.execute(f"UPDATE Players SET NO_OF_MVP = no_of_mvp+1 where PID='{mvp}'")
@@ -159,33 +159,9 @@ def add_matches(match_id, team_a, team_b, teama_score,
         cur.execute(f"update points_table set Net_Run_Rate = Net_Run_Rate-{nrr} where tid='{team_a}'")
     con.commit()
 
-def add_player():
-    while True:
-        pname=input("Player Name: ").upper()
-        if len(pname)>30:
-            print("Maximum length of player name is 30 characters only ")
-            continue
-        else:
-            break
-    while True:
-        pos=input("Position(batter/wicket-keeper/bowler/all-rounder): ").upper()
-        if pos.lower() in ['batter','wicket-keeper','bowler','all-rounder']:
-            break
-        else:
-            continue
-    while True:
-        cur.execute("SELECT TID FROM TEAMS")
-        data=cur.fetchall()
-        if data:
-            print(data)
-            tid=input("TeamID: ").upper()
-            if (tid,) not in data:
-                print("TeamID is not in the table")
-                continue
-            else:
-                break
+def add_player(pid, pname, position, tid):
     print()
-    cur.execute(f"INSERT INTO Players (PID, PName, Position, TID) values('{auto_increment()}','{pname}','{pos}','{tid}')")
+    cur.execute(f"INSERT INTO Players (PID, PName, Position, TID) values('{pid}','{pname}','{position}','{tid}')")
     con.commit()
 
 def add_team(tid, tname):
