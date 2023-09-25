@@ -236,9 +236,9 @@ def create_match():
 
     new_match = ttk.Toplevel(title = "Add New Match")
     data = [("MID", match_id), ("Team A", team_a), ("Team B", team_b),
-            ("Team A Score", teama_score), ("Team A Extras", teama_extras), ("Team A Wickets", teama_wickets),
+            ("Team A Score", teama_score), ("Team A Wickets", teama_wickets), ("Team A Extras", teama_extras),
             ("Team B Score",teamb_score), ("Team B Wickets", teamb_wickets), ("Team B Extras", teamb_extras),
-            ("Winner", winner), ("Loser", loser), ("MVP", mvp),
+            ("MVP", mvp),
             ("Date", date), ("Time", time), ("Venue", venue),
             ("Team A Overs", teama_overs), ("Team B Overs", teamb_overs)]
     for row_num, column_data in enumerate(data, 1):
