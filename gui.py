@@ -278,10 +278,13 @@ def create_team():
     ttk.Button(new_team, text = "Add Team", command = lambda: check_team_details(tid.get(), tname.get(), new_team)).grid(column = 0, columnspan = 2, pady = 5)
 
 def check_team_details(tid, tname, toplevel_window):
+    teams = dict(Queries.display_teams())
     if len(tname) == 0 or len(tid) == 0:
         raise_error("Invalid TID or TName")
     elif len(tname) > 30:
         raise_error("Lenth of Team Name cant be greater than 30")
+    elif tid in teams:
+        raise_error("Team already exists")
     else:
         Queries.add_team(tid, tname)
         toplevel_window.destroy()
@@ -303,9 +306,14 @@ def add_player():
     ttk.Button(new_player, text = "Add Player", command = lambda: check_player_details(arguments, new_player)).grid(column = 0, columnspan = 2, pady = 5)
 
 def check_player_details(arguments, toplevel_window):
-    print(arguments[0].get())
+    teams = dict(Queries.display_teams())
+    players = Queries.display_all_players()
     if len(arguments[0].get()) == 0 or len(arguments[1].get()) == 0:
         raise_error("Invalid PID or PName")
+    elif arguments[3].get() not in teams:
+        raise_error("Team does not exist")
+    elif arguments[0].get() in [player[0] for player in players]:
+        raise_error("Player already exists")
     else:
         Queries.add_player(*(var.get() for var in arguments))
         toplevel_window.destroy()
