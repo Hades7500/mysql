@@ -114,21 +114,23 @@ def display_players():
     players = Queries.display_all_players()
     players_table = ttk.Treeview(tab3,
                          columns = ("PID", "PName", "Position", "Runs",
-                                    "Wickets", "Hundreds", "Fifties", "Highest_Score",
-                                    "Five_Wicket_Hauls", "TID"),
+                                    "Wickets", "Hundreds", "Fifties", "Sixes",
+                                    "Fours", "Highest_Score",
+                                    "Five_Wicket_Hauls", "No_Of_MVP", "TID"),
                          show = "headings",
                          style = "style.Treeview", selectmode = "browse")
 
     columns = [("PID", 150), ("PName", 180), ("Position", 135),
                ("Runs", 80), ("Wickets", 120), ("Hundreds", 125),
-               ("Fifties", 120), ("Highest_Score", 210), ("Five_Wicket_Hauls", 385), ("TID", 112)]
+               ("Fifties", 120), ("Sixes", 112), ("Fours", 112), ("Highest_Score", 210),
+               ("Five_Wicket_Hauls", 330), ("No_Of_MVP", 190), ("TID", 112)]
     for column in columns:
         players_table.column(column[0], width = column[1], stretch = False)
 
     headings = [("PID", "Player ID"), ("PName", "Player Name"), ("Position", "Position"),
                ("Runs", "Runs"), ("Wickets", "Wickets"), ("Hundreds", "Hundreds"),
-               ("Fifties", "Fifties"), ("Highest_Score", "Highest Score"),
-               ("Five_Wicket_Hauls", "Five Wicket Hauls"), ("TID", "Team ID")]
+               ("Fifties", "Fifties"), ("Sixes", "Sixes"), ("Fours", "Fours"), ("Highest_Score", "Highest Score"),
+               ("Five_Wicket_Hauls", "Five Wicket Hauls"), ("No_Of_MVP", "No Of MVP"), ("TID", "Team ID")]
     for heading in headings:
         players_table.heading(heading[0], text = heading[1], anchor = "w")
 
@@ -243,8 +245,8 @@ def create_match():
     for row_num, column_data in enumerate(data, 1):
         ttk.Label(new_match, text = column_data[0]).grid(column = 0, row = row_num)
         ttk.Entry(new_match, textvariable = column_data[1]).grid(column = 1, row = row_num, padx = 10)
-    date = ttk.DateEntry(new_match)
-    date.grid(column = 1, row = 13, padx = 10)
+    date = ttk.DateEntry(new_match, dateformat = "%Y-%m-%d")
+    date.grid(column = 1, row = 11, padx = 10)
 
 
     arguments = (match_id, team_a, team_b, teama_score,\
