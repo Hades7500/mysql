@@ -141,6 +141,135 @@ def display_players():
     players_table.pack(fill = "both", expand = 1)
     players_table.config(height = 20)
 
+def display_run_stats():
+    global run_stats
+    stats = Queries.runs_stats()
+    run_stats = ttk.Treeview(tab7,
+                             columns = ("PName", "TID", "Runs"),
+                             show = "headings",
+                             style = "style.Treeview")
+    run_stats.column("PName", width = 220)
+    run_stats.heading("PName", text = "Player Name", anchor = "w")
+    run_stats.heading("TID", text = "TID", anchor = "w")
+    run_stats.heading("Runs", text = "Runs", anchor = "w")
+    for stat in stats:
+        run_stats.insert('', tk.END, text = '', values = stat)
+
+    run_stats.pack(fill = "both", expand = 1)
+
+def display_wicket_stats():
+    global wicket_stats
+    stats = Queries.wickets_stats()
+    wicket_stats = ttk.Treeview(tab8,
+                             columns = ("PName", "TID", "Wickets"),
+                             show = "headings",
+                             style = "style.Treeview")
+    wicket_stats.column("PName", width = 220)
+    wicket_stats.heading("PName", text = "Player Name", anchor = "w")
+    wicket_stats.heading("TID", text = "TID", anchor = "w")
+    wicket_stats.heading("Wickets", text = "Wickets", anchor = "w")
+    for stat in stats:
+        wicket_stats.insert('', tk.END, text = '', values = stat)
+
+    wicket_stats.pack(fill = "both", expand = 1)
+
+def highest_score_stats():
+    global score_stats
+    stats = Queries.Highest_score_stats()
+    score_stats = ttk.Treeview(tab9,
+                             columns = ("PName", "TID", "Highest_Score"),
+                             show = "headings",
+                             style = "style.Treeview")
+    score_stats.column("PName", width = 220)
+    score_stats.heading("PName", text = "Player Name", anchor = "w")
+    score_stats.heading("TID", text = "TID", anchor = "w")
+    score_stats.heading("Highest_Score", text = "Highest Score", anchor = "w")
+    for stat in stats:
+        score_stats.insert('', tk.END, text = '', values = stat)
+
+    score_stats.pack(fill = "both", expand = 1)
+
+def display_hundreds_stats():
+    global hundreds_stats
+    stats = Queries.Hundreds_stats()
+    hundreds_stats = ttk.Treeview(tab10,
+                             columns = ("PName", "TID", "Hundreds"),
+                             show = "headings",
+                             style = "style.Treeview")
+    hundreds_stats.column("PName", width = 220)
+    hundreds_stats.heading("PName", text = "Player Name", anchor = "w")
+    hundreds_stats.heading("TID", text = "TID", anchor = "w")
+    hundreds_stats.heading("Hundreds", text = "Hundreds", anchor = "w")
+    for stat in stats:
+        hundreds_stats.insert('', tk.END, text = '', values = stat)
+
+    hundreds_stats.pack(fill = "both", expand = 1)
+
+def display_fifties_stats():
+    global fifties_stats
+    stats = Queries.Fifties_stats()
+    fifties_stats = ttk.Treeview(tab11,
+                             columns = ("PName", "TID", "Fifties"),
+                             show = "headings",
+                             style = "style.Treeview")
+    fifties_stats.column("PName", width = 220)
+    fifties_stats.heading("PName", text = "Player Name", anchor = "w")
+    fifties_stats.heading("TID", text = "TID", anchor = "w")
+    fifties_stats.heading("Fifties", text = "Fifties", anchor = "w")
+    for stat in stats:
+        fifties_stats.insert('', tk.END, text = '', values = stat)
+
+    fifties_stats.pack(fill = "both", expand = 1)
+
+
+def display_five_wickets_stats():
+    global five_wickets_stats
+    stats = Queries.Five_Wicket_stats()
+    five_wickets_stats = ttk.Treeview(tab12,
+                             columns = ("PName", "TID", "Five_Wicket_Hauls"),
+                             show = "headings",
+                             style = "style.Treeview")
+    five_wickets_stats.column("PName", width = 220)
+    five_wickets_stats.heading("PName", text = "Player Name", anchor = "w")
+    five_wickets_stats.heading("TID", text = "TID", anchor = "w")
+    five_wickets_stats.heading("Five_Wicket_Hauls", text = "Five Wicket Hauls", anchor = "w")
+    for stat in stats:
+        five_wickets_stats.insert('', tk.END, text = '', values = stat)
+
+    five_wickets_stats.pack(fill = "both", expand = 1)
+
+def display_fours_stats():
+    global fours_stats
+    stats = Queries.Fours_stats()
+    fours_stats = ttk.Treeview(tab13,
+                             columns = ("PName", "TID", "Fours"),
+                             show = "headings",
+                             style = "style.Treeview")
+    fours_stats.column("PName", width = 220)
+    fours_stats.heading("PName", text = "Player Name", anchor = "w")
+    fours_stats.heading("TID", text = "TID", anchor = "w")
+    fours_stats.heading("Fours", text = "Fours", anchor = "w")
+    for stat in stats:
+        fours_stats.insert('', tk.END, text = '', values = stat)
+
+    fours_stats.pack(fill = "both", expand = 1)
+
+def display_sixes_stats():
+    global sixes_stats
+    stats = Queries.Sixes_stats()
+    sixes_stats = ttk.Treeview(tab14,
+                             columns = ("PName", "TID", "Sixes"),
+                             show = "headings",
+                             style = "style.Treeview")
+    sixes_stats.column("PName", width = 220)
+    sixes_stats.heading("PName", text = "Player Name", anchor = "w")
+    sixes_stats.heading("TID", text = "TID", anchor = "w")
+    sixes_stats.heading("Sixes", text = "Sixes", anchor = "w")
+    for stat in stats:
+        sixes_stats.insert('', tk.END, text = '', values = stat)
+
+    sixes_stats.pack(fill = "both", expand = 1)
+
 def TeamA_Details():
     global TeamA_Details
     TeamA = Queries.display_TeamA_Details()
@@ -368,12 +497,29 @@ tab3 = ttk.Frame(notebook)
 tab4 = ttk.Frame(notebook)
 tab5 = ttk.Frame(notebook)
 tab6 = ttk.Frame(notebook)
+tab7 = ttk.Frame(notebook)
+tab8 = ttk.Frame(notebook)
+tab9 = ttk.Frame(notebook)
+tab10 = ttk.Frame(notebook)
+tab11 = ttk.Frame(notebook)
+tab12 = ttk.Frame(notebook)
+tab13 = ttk.Frame(notebook)
+tab14 = ttk.Frame(notebook)
+
 notebook.add(tab1, text = "Matches")
 notebook.add(tab2, text = "Teams")
 notebook.add(tab3, text = "Players")
 notebook.add(tab4, text = "Team A Details")
 notebook.add(tab5, text = "Team B Details")
 notebook.add(tab6, text = "Points")
+notebook.add(tab7, text = "Runs Stats")
+notebook.add(tab8, text = "Wicket Stats")
+notebook.add(tab9, text = "Highest Score Stats")
+notebook.add(tab10, text = "Hundreds Stats")
+notebook.add(tab11, text = "Fifties Stats")
+notebook.add(tab12, text = "Five Wicket Hauls")
+notebook.add(tab13, text = "Fours")
+notebook.add(tab14, text = "Sixes")
 
 login_box()
 # Code continues executing and tries to use mySQL even after entering wrong password is entered
@@ -384,7 +530,16 @@ try:
     tab1_widgets()
     tab2_widgets()
     tab3_widgets()
-except Exception:
+    display_run_stats()
+    display_wicket_stats()
+    highest_score_stats()
+    display_hundreds_stats()
+    display_fifties_stats()
+    display_five_wickets_stats()
+    display_fours_stats()
+    display_sixes_stats()
+except Exception as err:
+    print(err)
     exit()
 
 # Bindings

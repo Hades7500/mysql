@@ -196,74 +196,49 @@ def Sixes_stats():
     cur.execute("SELECT PName,T.TID,Sixes FROM Players P, Teams T WHERE P.TID=T.TID")
     data = cur.fetchall()
     data = sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tSixes")
-    for row in data:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    return [record for record in data]
+
 def Fours_stats():
-    cur.execute("select pname,t.tid,Fours from players p, teams t where p.tid=t.tid")
+    cur.execute("SELECT PName, T.TID, Fours FROM Players P, Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tFours")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def Five_Wicket_stats():
-    cur.execute("select pname,t.tid,Five_Wicket_Hauls from players p, teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Five_Wicket_Hauls FROM Players P, Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tFive-Wicket Hauls")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def Fifties_stats():
-    cur.execute("select pname,t.tid,Fifties from players p, teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Fifties FROM Players P, Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tFifties")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def Hundreds_stats():
-    cur.execute("select pname,t.tid,hundreds from players p, teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Hundreds FROM Players P, Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tHundreds")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def Highest_score_stats():
-    cur.execute("select pname,t.tid,highest_score from players p, teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Highest_Score FROM Players P, Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tHighest Score")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def wickets_stats():
-    cur.execute("select Pname,t.TID,wickets from players p,teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Wickets FROM Players P,Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tWickets")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t\t")
-        print()
+    data=sorted(data,key=lambda t:t[2], reverse=True)[:5]
+    return [record for record in data]
+
 def runs_stats():
-    cur.execute("select Pname,t.TID,runs from players p,teams t where p.tid=t.tid")
+    cur.execute("SELECT Pname, T.TID, Runs FROM Players P,Teams T WHERE P.TID = T.TID")
     data=cur.fetchall()
-    data_1=sorted(data,key=lambda t:t[2], reverse=True)[:5]
-    print("Player Name\t\tTeam\t\tRuns")
-    for row in data_1:
-        for val in row:
-            print(val,end="\t\t")
-        print()
+    return [record for record in data]
+
 def display_Stats_menu():
     while True:
         #Prompt the user to enter their choice
