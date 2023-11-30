@@ -302,7 +302,7 @@ def TeamA_Details():
 
 def TeamB_Details():
     global TeamB_Table
-    TeamB = Queries.display_TeamB_Details()
+    Teams = Queries.display_TeamB_Details()
     TeamB_Table = ttk.Treeview(tab5,
                          columns = ("TID", "MID", "PID", "Runs_made",
                                     "Balls_played", "Fours", "Sixes", "Strike_rate",
@@ -323,12 +323,16 @@ def TeamB_Details():
     for heading in headings:
         TeamB_Table.heading(heading[0], text = heading[1], anchor = "w")
 
+    for team in Teams:
+        TeamA_Table.insert('', tk.END, text = '',
+                            values = team)
+
     TeamB_Table.pack(fill = "both", expand = 1)
     TeamB_Table.config(height = 20)
 
-def points_table():
+def display_points_table():
     global points_table
-    points_table = Queries.display_points_table()
+    points = Queries.display_points_table()
     points_table = ttk.Treeview(tab6,
                          columns = ("TID","Matches", "Wins", "Losses", "Net_Runrate",
                                     "Points",),
@@ -344,6 +348,9 @@ def points_table():
                ("Losses", "Losses"),("Net_Runrate","NRR"),("Points","Points")]
     for heading in headings:
         points_table.heading(heading[0], text = heading[1], anchor = "w")
+
+    for point in points:
+        points_table.insert('', tk.END, text = '', values = point)
 
     points_table.pack(fill = "both", expand = 1)
     points_table.config(height = 20)
@@ -474,7 +481,7 @@ def tab5_widgets():
     TeamB_Details()
 
 def tab6_widgets():
-    points_table()
+    display_points_table()
 
 window = ttk.Window(themename = "superhero")
 window.title("World Cup")
