@@ -1,5 +1,6 @@
 import tkinter as tk
 import ttkbootstrap as ttk
+from PIL import ImageTk, Image
 import Queries
 
 def login_box():
@@ -107,7 +108,7 @@ def display_teams():
     for team in teams:
         team_table.insert('', tk.END, text = '', values = team)
 
-    team_table.pack(fill = "both", anchor = "w")
+    team_table.pack(fill = "none", anchor = "center")
 
 def display_players():
     global players_table
@@ -271,38 +272,38 @@ def display_sixes_stats():
     sixes_stats.pack(fill = "both", expand = 1)
 
 def TeamA_Details():
-    global TeamA_Details
-    TeamA = Queries.display_TeamA_Details()
-    TeamA_Details = ttk.Treeview(tab4,
-                         columns = ("TID", "MID", "PID", "Runs_made",
-                                    "Balls_played", "Fours", "Sixes", "Strike_rate",
-                                    "Over_Bowled", "Runs_conceded","Wickets_Taken","Economy"),
-                         show = "headings",
-                         style = "style.Treeview", selectmode = "browse")
+    global TeamA_Table
+    Teams = Queries.display_TeamA_Details()
+    TeamA_Table = ttk.Treeview(tab4,
+                                columns = ("TID", "MID", "PID", "Runs_made",
+                                            "Balls_played", "Fours", "Sixes", "Strike_rate",
+                                            "Over_Bowled", "Runs_conceded","Wickets_Taken","Economy"),
+                                show = "headings",
+                                style = "style.Treeview", selectmode = "browse")
 
     columns = [("TID",150),("MID",150),("PID", 150), ("Runs_made", 180), ("Balls_played", 135),
                ("Fours", 80), ("Sixes", 120), ("Strike_rate", 125),
                ("Over_Bowled", 120), ("Runs_conceded", 210), ("Wickets_Taken", 385), ("Economy", 112)]
     for column in columns:
-        TeamA_Details.column(column[0], width = column[1], stretch = False)
+        TeamA_Table.column(column[0], width = column[1], stretch = False)
 
     headings = [("TID", "Team ID"), ("MID", "Match ID"), ("Balls_played", "Balls_played"),
                ("Runs_made", "Runs_made"),("Fours", "Fours"), ("Sixes", "Sixes"),
                ("Strike_rate", "Strike_rate"), ("Over_Bowled", "Over_Bowled"),
                ("Runs_conceded", "Runs_conceded"), ("Wickets_Taken", "Wickets_Taken"),("Economy","Economy")]
     for heading in headings:
-        TeamA_Details.heading(heading[0], text = heading[1], anchor = "w")
+        TeamA_Table.heading(heading[0], text = heading[1], anchor = "w")
 
-    for team in TeamA_Details:
-        TeamA_Details.insert('', tk.END, text = '',
-                             values = team)
-    TeamA_Details.pack(fill = "both", expand = 1)
-    TeamA_Details.config(height = 20)
+    for team in Teams:
+        TeamA_Table.insert('', tk.END, text = '',
+                            values = team)
+    TeamA_Table.pack(fill = "both", expand = 1)
+    TeamA_Table.config(height = 20)
 
 def TeamB_Details():
-    global TeamB_Details
+    global TeamB_Table
     TeamB = Queries.display_TeamB_Details()
-    TeamB_Details = ttk.Treeview(tab5,
+    TeamB_Table = ttk.Treeview(tab5,
                          columns = ("TID", "MID", "PID", "Runs_made",
                                     "Balls_played", "Fours", "Sixes", "Strike_rate",
                                     "Over_Bowled", "Runs_conceded","Wickets_Taken","Economy"),
@@ -313,17 +314,17 @@ def TeamB_Details():
                ("Fours", 80), ("Sixes", 120), ("Strike_rate", 125),
                ("Over_Bowled", 120), ("Runs_conceded", 210), ("Wickets_Taken", 385), ("Economy", 112)]
     for column in columns:
-        TeamB_Details.column(column[0], width = column[1], stretch = False)
+        TeamB_Table.column(column[0], width = column[1], stretch = False)
 
     headings = [("TID", "Team ID"), ("MID", "Match ID"), ("Balls_played", "Balls_played"),
                ("Runs_made", "Runs_made"),("Fours", "Fours"), ("Sixes", "Sixes"),
                ("Strike_rate", "Strike_rate"), ("Over_Bowled", "Over_Bowled"),
                ("Runs_conceded", "Runs_conceded"), ("Wickets_Taken", "Wickets_Taken"),("Economy","Economy")]
     for heading in headings:
-        TeamB_Details.heading(heading[0], text = heading[1], anchor = "w")
+        TeamB_Table.heading(heading[0], text = heading[1], anchor = "w")
 
-    TeamB_Details.pack(fill = "both", expand = 1)
-    TeamB_Details.config(height = 20)
+    TeamB_Table.pack(fill = "both", expand = 1)
+    TeamB_Table.config(height = 20)
 
 def points_table():
     global points_table
@@ -475,11 +476,14 @@ def tab5_widgets():
 def tab6_widgets():
     points_table()
 
-window = ttk.Window(themename = "darkly")
+window = ttk.Window(themename = "superhero")
 window.title("World Cup")
 SCREEN_HEIGHT = window.winfo_screenheight()
 SCREEN_WIDTH = window.winfo_screenwidth()
-window.geometry("1600x900")
+window.geometry(f"{SCREEN_WIDTH}x{SCREEN_HEIGHT}")
+bg = ImageTk.PhotoImage(Image.open("background.jpeg").resize(size = (1920, 1080)))
+bg_label = ttk.Label(window, image = bg)
+bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
 ttk.Label(window, text = "World Cup 2023", font = "SaxMono 50").pack()
 
@@ -525,11 +529,14 @@ login_box()
 # Code continues executing and tries to use mySQL even after entering wrong password is entered
 # throws error because mySQL cursor does not exist
 try:
-    notebook.pack(side = "top")
+    notebook.pack(side = "bottom")
     notebook.config(width = 1150, height = 415)
     tab1_widgets()
     tab2_widgets()
     tab3_widgets()
+    tab4_widgets()
+    tab5_widgets()
+    tab6_widgets()
     display_run_stats()
     display_wicket_stats()
     highest_score_stats()

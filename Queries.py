@@ -12,9 +12,6 @@ def login(username, password):
     except:
         print("Incorrect Username or Password")
         return False
-        
-
-
 
 def auto_increment():
     cur.execute("SELECT PID FROM Players")
@@ -275,11 +272,11 @@ def display_Stats_menu():
 
 #Functions To Display Records
 def display_TeamB_Details():
-    cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,Fours,Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamB_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
+    cur.execute("SELECT Teams.TID,mid,pname,Runs_Made,Balls_Played,t.Fours,t.Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamB_Details t, Players p, Teams where t.pid=p.pid and t.tid=Teams.tid")
     data=cur.fetchall()
     return[detail for detail in data]
 def display_TeamA_Details():
-    cur.execute("select teams.TID,mid,pname,Runs_Made,Balls_Played,t.Fours,t.Sixes,Strike_Rate,Overs_Bowled,Maiden,Runs_Conceded,Wickets_Taken,Economy from TeamA_details t,players p, teams where t.pid=p.pid and t.tid=teams.tid")
+    cur.execute("SELECT Teams.TID, MID, PName, Runs_Made, Balls_Played, T.Fours, T.Sixes, Strike_Rate, Overs_Bowled, Maiden, Runs_Conceded, Wickets_Taken, Economy FROM TeamA_Details T,Players P, Teams WHERE T.PID = P.PID AND T.TID = Teams.Tid")
     data=cur.fetchall()
     return[detail for detail in data]
 def display_matches():
