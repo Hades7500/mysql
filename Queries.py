@@ -147,7 +147,7 @@ def add_matches(match_id, team_a, team_b, teama_score,
     if winner==team_a:
         nrr=xa-xb
         nrr=round(nrr,3)
-        cur.execute(f"update Points_Table set Net_Run_Rate = Net_Run_Rate+{nrr} where tid='{team_a}'") # replace team_a with winner
+        cur.execute(f"update Points_Table set Net_Run_Rate = Net_Run_Rate+{nrr} where tid='{team_a}'")
         cur.execute(f"update Points_Table set Net_Run_Rate = Net_Run_Rate-{nrr} where tid='{team_b}'")
     elif winner==team_b:
         nrr=xb-xa

@@ -54,6 +54,26 @@ def resize_notebook(_):
         notebook.config(width = 300, height = 246)
     elif notebook.select() == ".!notebook.!frame3":
         notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame4":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame5":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame6":
+        notebook.config(width = 900, height = 415)
+    elif notebook.select() == ".!notebook.!frame7":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame8":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame9":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame10":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame11":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame12":
+        notebook.config(width = 1150, height = 415)
+    elif notebook.select() == ".!notebook.!frame13":
+        notebook.config(width = 1150, height = 415)
     # else:
     #     notebook.configure
 
@@ -488,7 +508,7 @@ window.title("World Cup")
 SCREEN_HEIGHT = window.winfo_screenheight()
 SCREEN_WIDTH = window.winfo_screenwidth()
 window.geometry(f"{SCREEN_WIDTH}x{SCREEN_HEIGHT}")
-bg = ImageTk.PhotoImage(Image.open("background.jpeg").resize(size = (1920, 1080)))
+bg = ImageTk.PhotoImage(Image.open("background.jpeg").resize(size = (SCREEN_WIDTH, SCREEN_HEIGHT)))
 bg_label = ttk.Label(window, image = bg)
 bg_label.place(x = 0, y = 0, relwidth = 1, relheight = 1)
 
