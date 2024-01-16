@@ -167,34 +167,39 @@ def pie10():
     plt.legend(labels)
     plt.show()
 
-print('Main Menu')
-print('1.Line Graph')
-print('2.Bar Graph')
-print('3.Pie Charts')
-l=input('Please Select type of analysis')
-if l=='1':
-    line()
-elif l=='2':
-    bar_graph()
-elif l=='3':
-    n = input('1.India/2.Australia/3.England/4.New zealand/5.Pakistan/6.Bangladesh/7.West Indies/8.South Africa/9.Sri lanka/10.Afghanistan')
-    if n == 1:
-        pie()
-    elif n == 2:
-        pie2()
-    elif n == 3:
-        pie3()
-    elif n == 4:
-        pie4()
-    elif n == 5:
-        pie5()
-    elif n == 6:
-        pie6()
-    elif n == 7:
-        pie7()
-    elif n == 8:
-        pie8()
-    elif n == 9:
-        pie9()
-    elif n == 10:
-        pie10()
+while True:
+    choice = int(input("Main Menu\n1.Line Graph\t\t2.Bar Graph\t\t3.Pie Charts\t\t0.exit\n(1/2/3/0): "))
+    print()
+    if choice == 1:
+        line()
+    elif choice == 2:
+        bar_graph()
+    elif choice == 3:
+        team = int(input('1.IND\t\t2.AUS\t\t3.ENG\t\t4.NZ\t\t5.PAK\t\t6.BAN\t\t7.WI\t\t8.SSA\t\t9.SL\t\t10.AFG\n(1/2/3/4/5/6/7/8/9/10): '))
+        print()
+        if team == 1:
+            pie()
+        elif team == 2:
+            pie2()
+        elif team == 3:
+            pie3()
+        elif team == 4:
+            pie4()
+        elif team == 5:
+            pie5()
+        elif team == 6:
+            pie6()
+        elif team == 7:
+            pie7()
+        elif team == 8:
+            pie8()
+        elif team == 9:
+            pie9()
+        elif team == 10:
+            pie10()
+    elif choice == 0:
+        print("Bye!!")
+        break
+    else:
+        print("Invalid Input!!")
+        print()
